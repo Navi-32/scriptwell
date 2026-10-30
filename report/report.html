@@ -4,179 +4,796 @@
 <meta charset="UTF-8">
 <title>ScriptWell - Project Report</title>
 <style>
-  @page { size: A4; margin: 12mm 13mm; }
+  @page {
+    size: A4; margin: 17mm 17mm 17mm 17mm;
+    @bottom-center { content: counter(page); font-family: "Segoe UI", Arial, sans-serif; font-size: 9pt; color: #777; }
+    @top-right { content: "ScriptWell  |  Online Book Store"; font-family: "Segoe UI", Arial, sans-serif; font-size: 8pt; color: #999; }
+  }
+  @page :first { @bottom-center { content: none; } @top-right { content: none; } }
   * { box-sizing: border-box; }
-  html, body { background: #ffffff; margin: 0; }
-  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #1f1f1f; font-size: 9pt; line-height: 1.32;
+  html, body { background: #fff; margin: 0; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #222; font-size: 9.8pt; line-height: 1.42;
          -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { height: 272mm; overflow: hidden; page-break-after: always; position: relative; }
-  .page:last-child { page-break-after: auto; }
-  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 22pt; margin: 0; color: #1c1a2e; }
-  h2 { font-family: Georgia, serif; font-size: 11.5pt; color: #1c1a2e; margin: 7px 0 3px; padding-bottom: 2px; border-bottom: 1.5px solid #b8532c; }
-  p { margin: 0 0 5px; text-align: justify; }
-  .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #1c1a2e; padding-bottom: 6px; }
-  .head .sub { color: #555; font-size: 10pt; margin-top: 2px; }
-  .head .right { text-align: right; font-size: 8.6pt; color: #444; }
-  .tags { margin: 6px 0 2px; }
-  .tag { display: inline-block; border: 1px solid #d9cfc1; border-radius: 10px; padding: 0 7px; margin: 0 3px 3px 0; font-size: 8pt; color: #5a4636; background: #fff; }
-  table { border-collapse: collapse; width: 100%; font-size: 7.9pt; }
-  th, td { border: 1px solid #d6d6d6; padding: 1.6px 5px; text-align: left; vertical-align: top; }
-  th { background: #f3efe8; font-weight: 600; }
-  code { font-family: Consolas, monospace; font-size: 7.8pt; color: #8a3a1c; }
-  .cols { display: flex; gap: 12px; }
-  .cols > div { flex: 1; min-width: 0; }
-  ul { margin: 0 0 4px; padding-left: 16px; }
-  li { margin-bottom: 1px; }
-  /* architecture diagram */
-  .arch { display: flex; align-items: stretch; gap: 0; margin: 4px 0 2px; }
-  .box { flex: 1; border: 1.5px solid #1c1a2e; border-radius: 6px; padding: 4px 5px; text-align: center; font-size: 8pt; background: #fff; }
-  .box b { display: block; font-size: 8.6pt; color: #1c1a2e; }
-  .box.db { border-color: #b8532c; }
-  .box.db b { color: #b8532c; }
-  .arrow { width: 16px; display: flex; align-items: center; justify-content: center; color: #b8532c; font-weight: bold; font-size: 11pt; }
-  .caption { font-size: 7.8pt; color: #555; text-align: center; margin-top: 2px; }
-  /* screenshots */
-  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; }
-  .shot img { width: 100%; height: 41mm; object-fit: cover; object-position: top; border: 1px solid #cfcfcf; border-radius: 3px; display: block; }
-  .shot div { font-size: 7.8pt; color: #444; text-align: center; margin-top: 2px; }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; color: #1c1a2e; }
+  .chapter { break-before: page; }
+  .chapter > .num { font-size: 10pt; letter-spacing: .25em; text-transform: uppercase; color: #b8532c; font-weight: 600; margin-top: 2mm; }
+  h1 { font-size: 21pt; margin: 2px 0 5mm; padding-bottom: 2.5mm; border-bottom: 2.5px solid #1c1a2e; }
+  h2 { font-size: 13pt; margin: 5mm 0 1.5mm; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; }
+  p { margin: 0 0 3mm; text-align: justify; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1mm; }
+  table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 1mm 0 4mm; break-inside: auto; }
+  tr { break-inside: avoid; }
+  th, td { border: 1px solid #cfcfcf; padding: 3px 6px; text-align: left; vertical-align: top; }
+  th { background: #f1ece4; font-weight: 600; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; color: #8a3a1c; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 8.1pt; line-height: 1.36; background: #fafafa; border: 1px solid #e2e2e2;
+        border-left: 3px solid #b8532c; padding: 3mm 4mm; margin: 1mm 0 4mm; white-space: pre-wrap; color: #1f1f1f; }
+  pre .k { color: #1d4ed8; font-weight: 600; } pre .c { color: #6b7280; font-style: italic; } pre .s { color: #15803d; }
+  .figure { margin: 2mm 0 6mm; text-align: center; break-inside: avoid; }
+  .figure img { width: 128mm; max-width: 100%; margin: 0 auto; border: 1px solid #cfcfcf; display: block; }
+  .figure .cap, .tcap { font-size: 9pt; color: #555; margin-top: 2mm; text-align: center; }
+  .tcap { margin: 0 0 1mm; font-weight: 600; color: #333; text-align: left; }
+  .figure.half img { width: 100%; }
+  .row2 { display: flex; gap: 8mm; justify-content: center; break-inside: avoid; }
+  .row2 .figure { flex: 1; }
+  .row2 .figure img { width: 100%; }
+  .row2.phone .figure { flex: 0 0 58mm; }
+  .chapter.flow { break-before: auto; margin-top: 7mm; }
+  .chapter > .num, .chapter > h1 { break-after: avoid; }
+  h1 + p, h2 + p { break-before: avoid; }
+  .phonepair .pp { display: flex; gap: 3mm; justify-content: center; }
+  .phonepair .pp img { width: 30% !important; }
+  .row2 { align-items: flex-start; }
+  ol.refs { columns: 2; column-gap: 8mm; font-size: 9pt; }
+  ol.refs li { break-inside: avoid; }
+  .note { border: 1px solid #e6d3c4; background: #fdf8f4; padding: 3mm 4mm; margin: 2mm 0 4mm; font-size: 9.8pt; break-inside: avoid; }
   .pass { color: #1e7d32; font-weight: 600; }
-  /* On screen, show the A4 sheets the PDF is printed from */
+  .muted { color: #666; }
+  svg text { font-family: "Segoe UI", Arial, sans-serif; }
+
+  /* cover */
+  .cover { height: 255mm; display: flex; flex-direction: column; text-align: center; padding-top: 10mm; }
+  .cover .logo { width: 30mm; margin: 0 auto 8mm; }
+  .cover .kicker { letter-spacing: .3em; text-transform: uppercase; font-size: 10pt; color: #b8532c; font-weight: 600; }
+  .cover h1.title { font-size: 40pt; border: 0; margin: 4mm 0 2mm; padding: 0; }
+  .cover .subtitle { font-size: 15pt; color: #444; font-family: Georgia, serif; }
+  .cover .rule { width: 40mm; height: 3px; background: #b8532c; margin: 9mm auto; }
+  .cover .subjects { font-size: 12pt; line-height: 1.8; }
+  .cover table { width: 125mm; margin: 12mm auto 0; font-size: 11pt; }
+  .cover table td { border: 0; border-bottom: 1px solid #ddd; padding: 3mm 2mm; }
+  .cover table td:first-child { color: #666; width: 45mm; }
+  .cover .stack { margin-top: auto; font-size: 9.5pt; color: #666; }
+
+  /* table of contents */
+  .toc { width: 100%; font-size: 11pt; border: 0; }
+  .toc td { border: 0; padding: 1.6mm 0; }
+  .toc td.pn { text-align: right; width: 14mm; }
+  .toc tr.ch td { font-weight: 600; padding-top: 3.5mm; }
+  .toc tr.sec td:first-child { padding-left: 8mm; color: #444; }
+  .toc .dots { border-bottom: 1px dotted #aaa; }
+
   @media screen {
     html, body { background: #e9e9e9; }
-    .page { width: 184mm; margin: 12px auto; padding: 0; background: #fff; box-shadow: 0 0 0 12mm #fff, 0 2px 14mm 12mm rgba(0,0,0,.12); margin-top: 26mm; margin-bottom: 26mm; }
+    body > * { max-width: 174mm; margin-left: auto; margin-right: auto; }
+    body { padding: 10mm 0; }
+    .sheet-bg { display: none; }
   }
-  .foot { position: absolute; bottom: 0; left: 0; right: 0; font-size: 7.6pt; color: #888; display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 3px; }
 </style>
 </head>
 <body>
 
-<!-- ============================ PAGE 1 ============================ -->
-<div class="page">
-  <div class="head">
-    <div>
-      <h1>ScriptWell &mdash; Online Book Store</h1>
-      <div class="sub">Mini Project Report &middot; Advanced Internet Programming &amp; PL/SQL</div>
-    </div>
-    <div class="right">Java Servlets &middot; JSP &middot; JDBC<br>Oracle Database Free 23ai &middot; PL/SQL<br>Tomcat 10.1 &middot; JDK 17 &middot; Eclipse IDE</div>
+<!-- ================================ COVER ================================ -->
+<section class="cover">
+  <svg class="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1c1a2e"/><path d="M16 18c6-2 11-1 16 3v27c-5-4-10-5-16-3z" fill="#e5b04a"/><path d="M48 18c-6-2-11-1-16 3v27c5-4 10-5 16-3z" fill="#b8532c"/><path d="M32 21v27" stroke="#1c1a2e" stroke-width="2"/></svg>
+  <div class="kicker">University Mini Project Report</div>
+  <h1 class="title">ScriptWell</h1>
+  <div class="subtitle">An Online Book Purchasing Store</div>
+  <div class="rule"></div>
+  <div class="subjects">
+    Submitted in partial fulfilment of the course requirements for<br>
+    <b>Advanced Internet Programming</b> &nbsp;and&nbsp; <b>PL/SQL</b>
   </div>
-  <div class="tags">
-    <span class="tag">MVC architecture</span><span class="tag">Jakarta Servlets 6.0</span><span class="tag">JSP + JSTL</span><span class="tag">Bootstrap 5</span>
-    <span class="tag">JavaScript (Fetch API)</span><span class="tag">CallableStatement</span><span class="tag">Packages</span><span class="tag">Triggers</span><span class="tag">Cursors</span><span class="tag">Exception handling</span>
-  </div>
-
-  <h2>1. Introduction and Objectives</h2>
-  <p><b>ScriptWell</b> is a responsive e-commerce web application for buying books online. Customers can browse a catalogue of
-  34 books in 7 categories, search and filter them, manage a shopping cart, buy instantly with <i>Buy Now</i>, pay through a
-  simulated Card/UPI/Cash-on-Delivery gateway and track or cancel their orders. Administrators get a dashboard for book CRUD,
-  inventory and order management. The project has two aims. For <b>Advanced Internet Programming</b>, it applies the MVC pattern with Servlets,
-  JSP, filters, sessions and JDBC. For <b>PL/SQL</b>, it places the core business rules in the database as packages, procedures,
-  functions, triggers, cursors and custom exceptions. Java calls this logic only through <code>CallableStatement</code>.</p>
-
-  <h2>2. System Architecture</h2>
-  <div class="arch">
-    <div class="box"><b>Browser (View)</b>JSP + JSTL, HTML5, CSS3, Bootstrap 5, JavaScript</div>
-    <div class="arrow">&#8644;</div>
-    <div class="box"><b>Filters</b>EncodingFilter<br>AuthFilter (login / admin role)</div>
-    <div class="arrow">&#8644;</div>
-    <div class="box"><b>Controllers</b>8 Servlets: Home, Catalog, Auth, Cart, Checkout, Order, Admin</div>
-    <div class="arrow">&#8644;</div>
-    <div class="box"><b>DAO + Model</b>BookDAO, UserDAO, CartDAO, OrderDAO; JavaBeans</div>
-    <div class="arrow">&#8644;</div>
-    <div class="box db"><b>Oracle PL/SQL</b>4 packages, 3 functions, 1 procedure, 4 triggers</div>
-  </div>
-  <div class="caption">Figure 1 &ndash; Three-tier MVC architecture. Servlets never contain SQL. They call DAO methods, which run stored PL/SQL through JDBC <code>CallableStatement</code> and read results from <code>SYS_REFCURSOR</code> OUT parameters.</div>
-
-  <div class="cols">
-    <div>
-      <h2>3. Database Design</h2>
-      <table>
-        <tr><th>Table</th><th>Key columns / constraints</th></tr>
-        <tr><td>CATEGORIES</td><td>category_id (PK, identity), name UNIQUE</td></tr>
-        <tr><td>BOOKS</td><td>book_id PK, category_id FK, isbn UNIQUE, CHECK price&gt;0, stock&ge;0, rating 0&ndash;5</td></tr>
-        <tr><td>USERS</td><td>user_id PK, email UNIQUE, password_hash (SHA-256), role CHECK IN (CUSTOMER, ADMIN)</td></tr>
-        <tr><td>CART_ITEMS</td><td>UNIQUE(user_id, book_id), CHECK qty 1&ndash;99, ON DELETE CASCADE</td></tr>
-        <tr><td>ORDERS</td><td>order_id PK (from 1001), status CHECK, payment_method CHECK</td></tr>
-        <tr><td>ORDER_ITEMS</td><td>order_id FK, book_id FK, unit_price (price at time of sale)</td></tr>
-        <tr><td>INVENTORY_LOG</td><td>old/new stock, change, reason (written by trigger)</td></tr>
-        <tr><td>ORDER_STATUS_AUDIT</td><td>old/new status history (written by trigger)</td></tr>
-      </table>
-      <p style="margin-top:4px">The view <code>V_BOOK_CATALOG</code> joins books with categories and is used by every catalogue query.
-      Indexes on <code>category_id</code>, <code>UPPER(title)</code> and <code>orders.user_id</code> speed up search and order history.</p>
-    </div>
-    <div>
-      <h2>4. PL/SQL Implementation</h2>
-      <table>
-        <tr><th>Object</th><th>Responsibility</th></tr>
-        <tr><td><code>pkg_user</code></td><td>register, login (<code>STANDARD_HASH</code>), list users</td></tr>
-        <tr><td><code>pkg_book</code></td><td>search with filters and sorting (REF CURSOR), add/update/delete, adjust stock</td></tr>
-        <tr><td><code>pkg_cart</code></td><td>MERGE-based add, update, remove, <code>cart_total</code>, <code>cart_count</code></td></tr>
-        <tr><td><code>pkg_order</code></td><td><code>place_order</code>, <code>buy_now</code>, history, status update, cancel with restock</td></tr>
-        <tr><td>Functions</td><td><code>fn_shipping_charge</code>, <code>fn_is_in_stock</code>, <code>fn_total_revenue</code></td></tr>
-        <tr><td>Procedure</td><td><code>sp_get_dashboard_stats</code> (6 OUT parameters)</td></tr>
-        <tr><td>Triggers</td><td>email normalisation, book validation, stock audit, order status audit</td></tr>
-      </table>
-      <p style="margin-top:4px;text-align:left"><b>Checkout transaction:</b> <code>place_order</code> opens an explicit cursor over the cart with
-      <code>FOR UPDATE</code>, which locks the book rows. For each line it checks stock, inserts the order line and decrements stock, then clears the
-      cart and <code>COMMIT</code>s. If anything fails, the exception handler closes the cursor and rolls back the whole order. Business errors use
-      <code>RAISE_APPLICATION_ERROR(-20001&hellip;-20010)</code>, and Java turns them into friendly messages, e.g.
-      <i>&ldquo;Only 1 copy of &lsquo;The Psychology of Money&rsquo; available&rdquo;</i>.</p>
-    </div>
-  </div>
-
-  <h2>5. Web Implementation Highlights</h2>
-  <div class="cols">
-    <ul>
-      <li><b>MVC:</b> JavaBeans (model), JSP views under <code>WEB-INF</code> (not directly reachable), Servlets as controllers using <code>@WebServlet</code>.</li>
-      <li><b>Session management:</b> the logged-in user and cart badge count are kept in <code>HttpSession</code>. The session ID is regenerated at login to prevent session fixation.</li>
-      <li><b>Security:</b> <code>AuthFilter</code> protects cart, checkout, orders and <code>/admin/*</code> (role check, HTTP 403). Output is escaped with <code>fn:escapeXml</code>, and all SQL uses bind parameters.</li>
-    </ul>
-    <ul>
-      <li><b>Reusable UI:</b> header/footer fragments and a custom JSP tag file <code>&lt;sw:bookCard&gt;</code>.</li>
-      <li><b>JavaScript:</b> AJAX add-to-cart (Fetch API + JSON) with toast messages, quantity steppers, card formatting and Luhn validation, and a payment-processing animation. Chart.js draws the admin sales chart.</li>
-      <li><b>Responsive design:</b> Bootstrap grid, custom CSS design tokens and 35 generated SVG book covers.</li>
-    </ul>
-  </div>
-
-  <div class="foot"><span>ScriptWell &mdash; Online Book Store</span><span>Page 1 of 2</span></div>
-</div>
-
-<!-- ============================ PAGE 2 ============================ -->
-<div class="page">
-  <h2 style="margin-top:0">6. Screenshots</h2>
-  <div class="shots">
-    <div class="shot"><img src="screenshots/01-home.png"><div>Fig. 2 &ndash; Home page with hero, search and categories</div></div>
-    <div class="shot"><img src="screenshots/02-catalog.png"><div>Fig. 3 &ndash; Catalogue with category, price filters and sorting</div></div>
-    <div class="shot"><img src="screenshots/03-book.png"><div>Fig. 4 &ndash; Book details with quantity, Add to cart and Buy Now</div></div>
-    <div class="shot"><img src="screenshots/05-checkout.png"><div>Fig. 5 &ndash; Checkout with simulated Card / UPI / COD payment</div></div>
-    <div class="shot"><img src="screenshots/06-confirmation.png"><div>Fig. 6 &ndash; Order confirmation with payment reference and tracking</div></div>
-    <div class="shot"><img src="screenshots/09-admin-dashboard.png"><div>Fig. 7 &ndash; Admin dashboard (stats from <code>sp_get_dashboard_stats</code>)</div></div>
-  </div>
-
-  <h2>7. Testing and Results</h2>
   <table>
-    <tr><th style="width:4%">#</th><th style="width:40%">Test case</th><th>Expected result</th><th style="width:7%">Result</th></tr>
-    <tr><td>1</td><td>Register with an email that already exists</td><td>pkg_user raises -20001 &rarr; &ldquo;An account with this email already exists&rdquo;</td><td class="pass">Pass</td></tr>
-    <tr><td>2</td><td>Login with wrong password / correct password</td><td>&ldquo;Invalid email or password&rdquo; / session created, redirect (admin &rarr; dashboard)</td><td class="pass">Pass</td></tr>
-    <tr><td>3</td><td>Search &ldquo;java&rdquo;, category filter, price range &#8377;400&ndash;699, sorting</td><td>2, 6 and 16 matching books returned in the chosen order</td><td class="pass">Pass</td></tr>
-    <tr><td>4</td><td>Add 5 copies of a book that has 1 in stock</td><td>-20003 &ldquo;Only 1 copy &hellip; available&rdquo;. Cart unchanged</td><td class="pass">Pass</td></tr>
-    <tr><td>5</td><td>Checkout with invalid card number (fails Luhn)</td><td>Rejected before calling the database, form shown again with error</td><td class="pass">Pass</td></tr>
-    <tr><td>6</td><td>Place order from cart / Buy Now</td><td>Order created, stock reduced, cart cleared, INVENTORY_LOG rows added by trigger</td><td class="pass">Pass</td></tr>
-    <tr><td>7</td><td>Customer opens another user&rsquo;s order or <code>/admin</code></td><td>HTTP 404 (owner check in <code>get_order</code>) / HTTP 403 from AuthFilter</td><td class="pass">Pass</td></tr>
-    <tr><td>8</td><td>Cancel a PLACED order; reopen a cancelled order (admin)</td><td>Stock restored by cursor loop / -20009 &ldquo;A cancelled order cannot be reopened&rdquo;</td><td class="pass">Pass</td></tr>
-    <tr><td>9</td><td>Admin adds book with price -5 or year 2099</td><td>Rejected by <code>pkg_book.validate_book</code> / trigger <code>trg_books_before_save</code></td><td class="pass">Pass</td></tr>
-    <tr><td>10</td><td>Admin deletes a book that has been sold / never sold</td><td>Deactivated (order history kept) / permanently deleted</td><td class="pass">Pass</td></tr>
+    <tr><td>Submitted by</td><td>&nbsp;</td></tr>
+    <tr><td>Roll number</td><td>&nbsp;</td></tr>
+    <tr><td>Course / Semester</td><td>&nbsp;</td></tr>
+    <tr><td>Guided by</td><td>&nbsp;</td></tr>
+    <tr><td>Academic year</td><td>2026 &ndash; 2027</td></tr>
   </table>
-  <p style="margin-top:4px"><b>Result:</b> all functional test cases passed on Apache Tomcat 10.1 with Oracle Database Free 23ai. The PL/SQL scripts compile
-  with no errors (<code>USER_ERRORS</code> is empty). The application is responsive on desktop and mobile widths.</p>
+  <div class="stack">Java Servlets &middot; JSP &middot; JDBC &middot; HTML &middot; CSS &middot; JavaScript &middot; Bootstrap<br>
+  Oracle Database Free 23ai &middot; PL/SQL &middot; Apache Tomcat 10.1 &middot; JDK 17 &middot; Eclipse IDE</div>
+</section>
 
-  <h2>8. Conclusion and Future Scope</h2>
-  <p>ScriptWell meets the project objectives. It is a complete, good-looking online bookstore built with Servlets, JSP and JDBC in a clean MVC
-  structure. Its core rules (stock control, pricing, checkout transactions, auditing and validation) are enforced in Oracle PL/SQL, so they
-  apply no matter which client calls them. Keeping these rules in the database made the Java code simpler and kept the data consistent even when several users
-  order at the same time. Future improvements could add a real payment gateway, e-mail notifications, wish lists and reviews, connection pooling through
-  a JNDI DataSource, and a REST API for a mobile app.</p>
+<!-- ============================== ABSTRACT =============================== -->
+<section class="chapter">
+  <h1>Abstract</h1>
+  <p><b>ScriptWell</b> is a modern, responsive online bookstore where customers can discover, compare and buy books, and where an
+  administrator can manage the catalogue, stock and orders. The project combines two subjects. For <b>Advanced Internet Programming</b>,
+  the application is built with Java Servlets, JavaServer Pages (JSP), JSTL, JDBC, HTML5, CSS3, JavaScript and Bootstrap, and follows
+  the Model&ndash;View&ndash;Controller (MVC) architecture. It runs on Apache Tomcat 10.1 with JDK 17. For <b>PL/SQL</b>, the
+  important business logic is not written in Java. It lives inside an Oracle Database Free 23ai schema as stored packages, procedures,
+  functions, triggers and cursors, with structured exception handling.</p>
+  <p>The store has 34 books in seven categories, each with its own designed cover. Customers can search by title, author or ISBN,
+  filter by category and price, sort the results, open a detailed book page, register and sign in, manage a shopping cart with quantity
+  controls, use a one-click <i>Buy Now</i> option, and check out with a simulated card, UPI or cash-on-delivery payment. After paying
+  they see an order confirmation page and can follow their order history, including cancelling orders that have not shipped yet.
+  The administrator dashboard shows revenue and sales by category, supports full book CRUD, highlights low-stock titles, keeps an
+  automatic stock-movement log and lets the administrator move orders through the
+  <i>Placed &rarr; Shipped &rarr; Delivered</i> lifecycle.</p>
+  <p>Java talks to Oracle only through JDBC <code>CallableStatement</code> objects that call PL/SQL. Query results come back as
+  <code>SYS_REFCURSOR</code> OUT parameters, and business errors are raised with <code>RAISE_APPLICATION_ERROR</code> and shown to
+  the user as friendly messages. The checkout runs as a single database transaction that locks the affected rows, so stock can never be
+  oversold. Triggers keep audit trails without any Java code. All functional test cases passed, and the application works well on both
+  desktop and mobile screens.</p>
+  <p><b>Keywords:</b> e-commerce, MVC, Java Servlets, JSP, JDBC, CallableStatement, Oracle, PL/SQL, stored procedures, packages, triggers, cursors.</p>
 
-  <div class="foot"><span>ScriptWell &mdash; Online Book Store</span><span>Page 2 of 2</span></div>
-</div>
+  </section>
+<section class="chapter">
+  <h1>Table of Contents</h1>
+  <table class="toc">
+    <tr class="ch"><td>Abstract</td><td class="pn" data-find="Abstract">2</td></tr>
+    <tr class="ch"><td>1. Introduction</td><td class="pn" data-find="Introduction">4</td></tr>
+    <tr class="sec"><td>1.1 Background &middot; 1.2 Problem statement &middot; 1.3 Objectives &middot; 1.4 Scope</td><td class="pn"></td></tr>
+    <tr class="ch"><td>2. Requirements and Technologies</td><td class="pn" data-find="Requirements and Technologies">5</td></tr>
+    <tr class="ch"><td>3. System Design and Architecture</td><td class="pn" data-find="System Design and Architecture">6</td></tr>
+    <tr class="ch"><td>4. Database Design</td><td class="pn" data-find="Database Design">8</td></tr>
+    <tr class="ch"><td>5. PL/SQL Implementation</td><td class="pn" data-find="PL/SQL Implementation">10</td></tr>
+    <tr class="ch"><td>6. Web Application Implementation</td><td class="pn" data-find="Web Application Implementation">13</td></tr>
+    <tr class="ch"><td>7. Application Screenshots</td><td class="pn" data-find="Application Screenshots">15</td></tr>
+    <tr class="ch"><td>8. Testing</td><td class="pn" data-find="Testing">18</td></tr>
+    <tr class="ch"><td>9. Results, Conclusion and Future Scope</td><td class="pn" data-find="Results, Conclusion and Future Scope">20</td></tr>
+    <tr class="ch"><td>References</td><td class="pn" data-find="References">20</td></tr>
+  </table>
+</section>
+
+<!-- ============================== CHAPTER 1 ============================== -->
+<section class="chapter">
+  <div class="num">Chapter 1</div>
+  <h1>Introduction</h1>
+  <h2>1.1 Background</h2>
+  <p>Online shopping has become the normal way to buy books. Readers expect to search a large catalogue in seconds, see clear
+  information about each title, keep a cart across visits, pay safely and track their orders. Behind this simple experience, a
+  bookstore has to keep inventory accurate, stop two customers from buying the last copy at the same moment, keep a record of every
+  change, and give staff the tools to manage products and orders.</p>
+  <p>ScriptWell is a working, reasonably sized version of such a system. It is small enough to explain fully in a viva, and it still
+  uses the same architectural ideas as production e-commerce platforms: a layered MVC web tier, a stateless controller layer,
+  data access through stored procedures, and integrity rules enforced inside the database.</p>
+
+  <h2>1.2 Problem Statement</h2>
+  <p>Many student e-commerce projects put all the logic in the web tier and treat the database as passive storage. This
+  leads to duplicated validation, race conditions during checkout and no audit trail. The problem this project addresses is
+  to design an online book store in which:</p>
+  <ul>
+    <li>the web application gives a clean, modern and responsive shopping experience for customers and administrators;</li>
+    <li>stock checks, order creation, cart rules, pricing and validation are enforced <i>inside Oracle</i> through PL/SQL, so every
+        client obeys the same rules;</li>
+    <li>concurrent purchases cannot oversell stock, and failed transactions leave no partial data behind;</li>
+    <li>every stock movement and order status change is recorded automatically for accountability.</li>
+  </ul>
+
+  <h2>1.3 Objectives</h2>
+  <ol>
+    <li>Build a dynamic web application using Java Servlets, JSP, JSTL and JDBC that follows the MVC pattern.</li>
+    <li>Design a normalised Oracle schema with primary/foreign keys, CHECK and UNIQUE constraints, indexes and a view.</li>
+    <li>Implement core operations as PL/SQL <b>packages, stored procedures and functions</b>, and call them from Java with
+        <code>CallableStatement</code>.</li>
+    <li>Use <b>triggers</b> for data cleaning and auditing, <b>cursors</b> for row-by-row processing, and <b>exception handling</b>
+        with user-defined error codes.</li>
+    <li>Provide registration, login, search, filters, book details, cart, Buy Now, checkout with simulated payment, order
+        confirmation and order history.</li>
+    <li>Provide an administrator dashboard for book CRUD, inventory and order management.</li>
+    <li>Create an attractive, responsive user interface with HTML, CSS, JavaScript and Bootstrap.</li>
+  </ol>
+
+  <h2>1.4 Scope</h2>
+  <p>The system covers the complete purchase cycle of a single online bookstore with two roles, <i>Customer</i> and <i>Administrator</i>.
+  Payment is simulated: card details are only checked for format with the Luhn algorithm, and are never stored or sent anywhere.
+  Shipping charges follow a simple rule (free delivery at &#8377;499 and above, otherwise &#8377;49). Out of scope are real payment
+  gateways, e-mail delivery, multiple warehouses and product reviews. Chapter 9 lists these as future enhancements.</p>
+
+  <h2>1.5 Mapping to the Two Subjects</h2>
+  <table>
+    <tr><th style="width:50%">Advanced Internet Programming</th><th>PL/SQL</th></tr>
+    <tr><td>Servlet lifecycle, <code>@WebServlet</code> URL mapping, GET/POST handling</td><td>Packages with specification and body (4 packages)</td></tr>
+    <tr><td>JSP, Expression Language, JSTL core/fmt/functions, custom tag file</td><td>Stand-alone stored functions (3) and procedure (1)</td></tr>
+    <tr><td>MVC architecture, request forwarding and redirect-after-POST</td><td>Row-level triggers using <code>:NEW</code> / <code>:OLD</code> (4)</td></tr>
+    <tr><td>HttpSession, filters, authentication and role-based access</td><td>Explicit cursors, cursor FOR loops, <code>FOR UPDATE</code> locking</td></tr>
+    <tr><td>JDBC <code>CallableStatement</code>, OUT parameters, REF CURSOR results</td><td><code>SYS_REFCURSOR</code>, <code>%TYPE</code>, <code>%ROWTYPE</code>, <code>MERGE</code></td></tr>
+    <tr><td>HTML5, CSS3, Bootstrap 5, JavaScript, Fetch API (AJAX), JSON</td><td>Exception handling: predefined, user-defined, <code>RAISE_APPLICATION_ERROR</code></td></tr>
+  </table>
+</section>
+
+<!-- ============================== CHAPTER 2 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 2</div>
+  <h1>Requirements and Technologies</h1>
+  <h2>2.1 Functional Requirements</h2>
+  <table>
+    <tr><th style="width:8%">ID</th><th style="width:22%">Module</th><th>Requirement</th></tr>
+    <tr><td>FR1</td><td>Catalogue</td><td>Show books on a home page (top rated, new arrivals, categories) and on a browse page.</td></tr>
+    <tr><td>FR2</td><td>Search &amp; filter</td><td>Search by title, author, ISBN or category. Filter by category and price range. Sort by price, rating, year or title.</td></tr>
+    <tr><td>FR3</td><td>Book details</td><td>Show cover, author, rating, price, stock status, description, publisher details and related books.</td></tr>
+    <tr><td>FR4</td><td>Accounts</td><td>Register with validation and log in/out. Passwords are stored only as SHA-256 hashes.</td></tr>
+    <tr><td>FR5</td><td>Cart</td><td>Add, update quantity, remove and clear items. Quantities cannot exceed available stock.</td></tr>
+    <tr><td>FR6</td><td>Buy Now</td><td>Buy a single title directly without touching the cart.</td></tr>
+    <tr><td>FR7</td><td>Checkout</td><td>Collect the shipping address, simulate Card/UPI/COD payment, create the order atomically.</td></tr>
+    <tr><td>FR8</td><td>Orders</td><td>Show confirmation, order history and order details. Allow cancellation before shipping.</td></tr>
+    <tr><td>FR9</td><td>Admin dashboard</td><td>Show revenue, order, book and low-stock counts, a sales-by-category chart and recent orders.</td></tr>
+    <tr><td>FR10</td><td>Admin books</td><td>Create, read, update and delete books. Books that have been sold are deactivated instead of deleted.</td></tr>
+    <tr><td>FR11</td><td>Admin inventory</td><td>List low-stock books, restock them, and view the automatic stock-movement log.</td></tr>
+    <tr><td>FR12</td><td>Admin orders</td><td>Filter orders by status and update status. Cancelling restores stock.</td></tr>
+  </table>
+
+  <h2>2.2 Non-Functional Requirements</h2>
+  <ul>
+    <li><b>Integrity:</b> no overselling. All-or-nothing checkout. Constraints enforced in the database.</li>
+    <li><b>Security:</b> hashed passwords, session-fixation protection, role-based access, output escaping, bind variables only.</li>
+    <li><b>Usability:</b> consistent, premium visual design. Responsive layout from 360&nbsp;px phones to wide desktops.</li>
+    <li><b>Maintainability:</b> clear MVC layers, one DAO per area, reusable view fragments, and SQL kept in versioned scripts.</li>
+  </ul>
+
+  <h2>2.3 Hardware and Software Requirements</h2>
+  <table>
+    <tr><th style="width:30%">Item</th><th>Specification used</th></tr>
+    <tr><td>Processor / RAM</td><td>Any modern x64 CPU, 8 GB RAM recommended (Oracle Free uses about 2 GB)</td></tr>
+    <tr><td>Operating system</td><td>Windows 10/11, Linux or macOS</td></tr>
+    <tr><td>Java</td><td>JDK 17 (the code is compiled with <code>--release 17</code>)</td></tr>
+    <tr><td>Web server</td><td>Apache Tomcat 10.1 (Jakarta Servlet 6.0, JSP 3.1)</td></tr>
+    <tr><td>Database</td><td>Oracle Database Free 23ai, pluggable database <code>FREEPDB1</code></td></tr>
+    <tr><td>IDE / tools</td><td>Eclipse IDE for Enterprise Java (Dynamic Web Project), SQL Developer or SQL*Plus</td></tr>
+    <tr><td>Libraries</td><td>Oracle JDBC driver <code>ojdbc11</code>, Jakarta JSTL 3.0, Bootstrap 5.3, Bootstrap Icons, Chart.js 4</td></tr>
+    <tr><td>Browser</td><td>Any current Chrome, Edge or Firefox</td></tr>
+  </table>
+
+  <h2>2.4 Technologies Used</h2>
+  <p><b>Java Servlets</b> receive HTTP requests, read parameters, call the data layer and decide which view to show.
+  <b>JSP with JSTL and EL</b> produce the HTML without Java scriptlets. <b>JDBC</b> with the Oracle thin driver opens connections, and
+  <b>CallableStatement</b> runs the stored PL/SQL. <b>HTML5, CSS3 and Bootstrap 5</b> provide the responsive layout,
+  extended with a custom stylesheet of design tokens (colours, radii, shadows). <b>JavaScript</b> adds AJAX add-to-cart, quantity steppers,
+  form formatting and validation. <b>Oracle PL/SQL</b> holds the business logic in packages, functions, procedures and triggers.</p>
+</section>
+
+<!-- ============================== CHAPTER 3 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 3</div>
+  <h1>System Design and Architecture</h1>
+  <h2>3.1 Overall Architecture</h2>
+  <p>ScriptWell has a three-tier architecture. The presentation tier is the browser. The application tier runs in Tomcat and is organised
+  as MVC. The data tier is Oracle, where the PL/SQL business logic runs. Servlets never contain SQL. They call DAO methods, and the DAOs only run
+  <code>{call package.procedure(?, ...)}</code> statements.</p>
+  <div class="figure">
+  <svg viewBox="0 0 680 300" width="100%">
+    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8z" fill="#b8532c"/></marker></defs>
+    <rect x="10" y="20" width="140" height="260" rx="10" fill="#f6f2ea" stroke="#1c1a2e" stroke-width="1.5"/>
+    <text x="80" y="45" text-anchor="middle" font-weight="700" font-size="13" fill="#1c1a2e">Client tier</text>
+    <rect x="25" y="65" width="110" height="80" rx="6" fill="#fff" stroke="#999"/><text x="80" y="90" text-anchor="middle" font-size="11" font-weight="600">Web browser</text><text x="80" y="108" text-anchor="middle" font-size="9.5">HTML5 &#183; CSS3</text><text x="80" y="122" text-anchor="middle" font-size="9.5">Bootstrap 5</text><text x="80" y="136" text-anchor="middle" font-size="9.5">JavaScript (Fetch)</text>
+    <rect x="25" y="165" width="110" height="95" rx="6" fill="#fff" stroke="#999"/><text x="80" y="188" text-anchor="middle" font-size="11" font-weight="600">Users</text><text x="80" y="206" text-anchor="middle" font-size="9.5">Guest</text><text x="80" y="221" text-anchor="middle" font-size="9.5">Customer</text><text x="80" y="236" text-anchor="middle" font-size="9.5">Administrator</text>
+
+    <rect x="190" y="20" width="300" height="260" rx="10" fill="#f6f2ea" stroke="#1c1a2e" stroke-width="1.5"/>
+    <text x="340" y="45" text-anchor="middle" font-weight="700" font-size="13" fill="#1c1a2e">Application tier &#8212; Apache Tomcat 10.1</text>
+    <rect x="205" y="60" width="270" height="34" rx="6" fill="#fff" stroke="#999"/><text x="340" y="81" text-anchor="middle" font-size="10.5"><tspan font-weight="600">Filters</tspan>: EncodingFilter, AuthFilter (login / ADMIN role)</text>
+    <rect x="205" y="104" width="130" height="80" rx="6" fill="#fff" stroke="#b8532c"/><text x="270" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#b8532c">Controller</text><text x="270" y="141" text-anchor="middle" font-size="9.5">7 Servlets</text><text x="270" y="155" text-anchor="middle" font-size="9.5">Home, Catalog, Auth,</text><text x="270" y="169" text-anchor="middle" font-size="9.5">Cart, Checkout, Order, Admin</text>
+    <rect x="345" y="104" width="130" height="80" rx="6" fill="#fff" stroke="#b8532c"/><text x="410" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#b8532c">View</text><text x="410" y="141" text-anchor="middle" font-size="9.5">16 JSP pages + fragments</text><text x="410" y="155" text-anchor="middle" font-size="9.5">JSTL, EL, bookCard.tag</text><text x="410" y="169" text-anchor="middle" font-size="9.5">under WEB-INF/views</text>
+    <rect x="205" y="194" width="130" height="72" rx="6" fill="#fff" stroke="#b8532c"/><text x="270" y="214" text-anchor="middle" font-size="11" font-weight="700" fill="#b8532c">Model</text><text x="270" y="231" text-anchor="middle" font-size="9.5">Book, Category, User,</text><text x="270" y="245" text-anchor="middle" font-size="9.5">CartItem, Order (JavaBeans)</text>
+    <rect x="345" y="194" width="130" height="72" rx="6" fill="#fff" stroke="#999"/><text x="410" y="214" text-anchor="middle" font-size="11" font-weight="700">DAO layer</text><text x="410" y="231" text-anchor="middle" font-size="9.5">BookDAO, UserDAO,</text><text x="410" y="245" text-anchor="middle" font-size="9.5">CartDAO, OrderDAO</text><text x="410" y="259" text-anchor="middle" font-size="9.5">CallableStatement</text>
+
+    <rect x="530" y="20" width="140" height="260" rx="10" fill="#fdf3ee" stroke="#b8532c" stroke-width="1.5"/>
+    <text x="600" y="45" text-anchor="middle" font-weight="700" font-size="13" fill="#b8532c">Data tier</text>
+    <text x="600" y="62" text-anchor="middle" font-size="10">Oracle Database Free 23ai</text>
+    <rect x="545" y="75" width="110" height="98" rx="6" fill="#fff" stroke="#999"/><text x="600" y="94" text-anchor="middle" font-size="11" font-weight="600">PL/SQL</text><text x="600" y="111" text-anchor="middle" font-size="9.5">pkg_user, pkg_book</text><text x="600" y="125" text-anchor="middle" font-size="9.5">pkg_cart, pkg_order</text><text x="600" y="139" text-anchor="middle" font-size="9.5">3 functions, 1 procedure</text><text x="600" y="153" text-anchor="middle" font-size="9.5">4 triggers</text>
+    <rect x="545" y="183" width="110" height="83" rx="6" fill="#fff" stroke="#999"/><text x="600" y="202" text-anchor="middle" font-size="11" font-weight="600">Schema</text><text x="600" y="219" text-anchor="middle" font-size="9.5">8 tables, 1 view</text><text x="600" y="233" text-anchor="middle" font-size="9.5">constraints, indexes</text><text x="600" y="247" text-anchor="middle" font-size="9.5">identity keys</text>
+
+    <line x1="150" y1="105" x2="203" y2="80" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="172" y="78" font-size="9" fill="#555">HTTP</text>
+    <line x1="410" y1="104" x2="410" y2="104" />
+    <line x1="335" y1="140" x2="343" y2="140" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="270" y1="184" x2="270" y2="192" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="335" y1="230" x2="343" y2="230" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="475" y1="230" x2="543" y2="140" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="482" y="196" font-size="9" fill="#555">JDBC</text>
+    <line x1="600" y1="173" x2="600" y2="181" stroke="#b8532c" stroke-width="2" marker-end="url(#ar)"/>
+  </svg>
+  <div class="cap">Figure 3.1 &ndash; Three-tier MVC architecture of ScriptWell</div>
+  </div>
+
+  <h2>3.2 MVC Responsibilities</h2>
+  <table>
+    <tr><th style="width:18%">Layer</th><th style="width:34%">Package / folder</th><th>Responsibility</th></tr>
+    <tr><td>Model</td><td><code>com.scriptwell.model</code></td><td>Plain JavaBeans with getters used by EL, plus small helpers such as <code>isLowStock()</code> and <code>getStatusColor()</code>.</td></tr>
+    <tr><td>View</td><td><code>WEB-INF/views/*.jsp</code></td><td>Presentation only, using JSTL and EL. Pages are inside WEB-INF so the browser can reach them only through a controller.</td></tr>
+    <tr><td>Controller</td><td><code>com.scriptwell.controller</code></td><td>Read and validate parameters, call DAOs, put data in request scope, then forward to a view or redirect after a POST.</td></tr>
+    <tr><td>Data access</td><td><code>com.scriptwell.dao</code></td><td>Call PL/SQL with <code>CallableStatement</code>, map REF CURSOR rows to model objects.</td></tr>
+    <tr><td>Cross-cutting</td><td><code>filter</code>, <code>util</code></td><td>Authentication and authorisation, UTF-8 encoding, connection factory, error-message translation, flash messages.</td></tr>
+  </table>
+
+  <h2>3.3 Request Flow &ndash; Placing an Order</h2>
+  <ol>
+    <li>The customer submits the checkout form (POST <code>/checkout</code>).</li>
+    <li><code>EncodingFilter</code> sets UTF-8. <code>AuthFilter</code> checks that the session has a signed-in user.</li>
+    <li><code>CheckoutServlet</code> builds the address and validates the simulated payment (card format + Luhn check, UPI pattern, or COD).</li>
+    <li><code>OrderDAO.placeOrder()</code> runs <code>{call pkg_order.place_order(?,?,?,?,?)}</code>.</li>
+    <li>In Oracle, the procedure locks the cart's book rows, checks stock, inserts <code>ORDERS</code> and <code>ORDER_ITEMS</code>, reduces stock
+        (the triggers write the audit rows), empties the cart and commits. It returns the order ID and payment reference.</li>
+    <li>The servlet updates the cart badge in the session and redirects to <code>/order?id=&hellip;&amp;placed=1</code> (Post/Redirect/Get).</li>
+    <li><code>OrderServlet</code> loads the header and line items through two REF CURSORs and forwards to <code>order.jsp</code>.</li>
+  </ol>
+
+  <h2>3.4 Project Structure</h2>
+<pre>scriptwell/
+├── database/            00_install.sql, 01_schema.sql, 02_functions.sql,
+│                        03_packages.sql, 04_triggers.sql, 05_seed.sql
+├── src/main/java/
+│   ├── db.properties    JDBC URL, user, password
+│   └── com/scriptwell/  controller/  dao/  model/  filter/  util/
+├── src/main/webapp/
+│   ├── WEB-INF/web.xml, views/ (+ admin/, common/), tags/bookCard.tag, lib/
+│   └── assets/          css/style.css, js/app.js, img/, covers/ (35 SVG covers)
+├── report/              this report and screenshots
+└── build.bat, deploy.ps1, README.md, Eclipse .project/.classpath/.settings</pre>
+</section>
+
+<!-- ============================== CHAPTER 4 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 4</div>
+  <h1>Database Design</h1>
+  <h2>4.1 Entity&ndash;Relationship Diagram</h2>
+  <p>The schema has six business entities and two audit tables. Every primary key is an Oracle <code>IDENTITY</code> column.
+  Order numbers start at 1001 so they look natural to customers.</p>
+  <div class="figure">
+  <svg viewBox="0 0 680 330" width="100%">
+    <g font-size="9.5">
+    <!-- CATEGORIES -->
+    <rect x="20" y="20" width="150" height="80" fill="#fff" stroke="#1c1a2e"/><rect x="20" y="20" width="150" height="20" fill="#1c1a2e"/><text x="95" y="34" text-anchor="middle" fill="#fff" font-weight="700">CATEGORIES</text>
+    <text x="28" y="55">PK category_id</text><text x="28" y="70">name (UNIQUE)</text><text x="28" y="85">description, icon</text>
+    <!-- BOOKS -->
+    <rect x="20" y="150" width="150" height="160" fill="#fff" stroke="#1c1a2e"/><rect x="20" y="150" width="150" height="20" fill="#1c1a2e"/><text x="95" y="164" text-anchor="middle" fill="#fff" font-weight="700">BOOKS</text>
+    <text x="28" y="185">PK book_id</text><text x="28" y="200">FK category_id</text><text x="28" y="215">title, author</text><text x="28" y="230">isbn (UNIQUE)</text><text x="28" y="245">price &gt; 0, stock &#8805; 0</text><text x="28" y="260">rating 0&#8211;5, cover_image</text><text x="28" y="275">publisher, pub_year, pages</text><text x="28" y="290">is_active (Y/N)</text>
+    <!-- USERS -->
+    <rect x="510" y="20" width="150" height="110" fill="#fff" stroke="#1c1a2e"/><rect x="510" y="20" width="150" height="20" fill="#1c1a2e"/><text x="585" y="34" text-anchor="middle" fill="#fff" font-weight="700">USERS</text>
+    <text x="518" y="55">PK user_id</text><text x="518" y="70">full_name, email (UNIQUE)</text><text x="518" y="85">password_hash (SHA-256)</text><text x="518" y="100">phone, address</text><text x="518" y="115">role CUSTOMER / ADMIN</text>
+    <!-- CART -->
+    <rect x="265" y="20" width="150" height="80" fill="#fff" stroke="#1c1a2e"/><rect x="265" y="20" width="150" height="20" fill="#1c1a2e"/><text x="340" y="34" text-anchor="middle" fill="#fff" font-weight="700">CART_ITEMS</text>
+    <text x="273" y="55">PK cart_id</text><text x="273" y="70">FK user_id, FK book_id</text><text x="273" y="85">quantity 1&#8211;99</text>
+    <!-- ORDERS -->
+    <rect x="510" y="170" width="150" height="140" fill="#fff" stroke="#1c1a2e"/><rect x="510" y="170" width="150" height="20" fill="#1c1a2e"/><text x="585" y="184" text-anchor="middle" fill="#fff" font-weight="700">ORDERS</text>
+    <text x="518" y="205">PK order_id (from 1001)</text><text x="518" y="220">FK user_id</text><text x="518" y="235">order_date, status</text><text x="518" y="250">subtotal, shipping_charge</text><text x="518" y="265">total_amount</text><text x="518" y="280">shipping_address</text><text x="518" y="295">payment_method, ref</text>
+    <!-- ORDER_ITEMS -->
+    <rect x="265" y="190" width="150" height="80" fill="#fff" stroke="#1c1a2e"/><rect x="265" y="190" width="150" height="20" fill="#1c1a2e"/><text x="340" y="204" text-anchor="middle" fill="#fff" font-weight="700">ORDER_ITEMS</text>
+    <text x="273" y="225">PK order_item_id</text><text x="273" y="240">FK order_id, FK book_id</text><text x="273" y="255">quantity, unit_price</text>
+    <!-- audits -->
+    <rect x="265" y="115" width="150" height="34" fill="#fdf3ee" stroke="#b8532c" stroke-dasharray="4 3"/><text x="340" y="129" text-anchor="middle" font-weight="700" fill="#b8532c">INVENTORY_LOG</text><text x="340" y="142" text-anchor="middle">&#8592; trigger on BOOKS.stock</text>
+    <rect x="265" y="285" width="150" height="34" fill="#fdf3ee" stroke="#b8532c" stroke-dasharray="4 3"/><text x="340" y="299" text-anchor="middle" font-weight="700" fill="#b8532c">ORDER_STATUS_AUDIT</text><text x="340" y="312" text-anchor="middle">trigger on ORDERS.status &#8594;</text>
+    </g>
+    <g stroke="#b8532c" stroke-width="1.6" fill="none">
+      <line x1="95" y1="100" x2="95" y2="150"/><text x="100" y="128" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+      <line x1="170" y1="200" x2="265" y2="60"/><text x="200" y="120" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+      <line x1="510" y1="60" x2="415" y2="60"/><text x="450" y="54" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+      <line x1="585" y1="130" x2="585" y2="170"/><text x="590" y="153" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+      <line x1="510" y1="230" x2="415" y2="230"/><text x="450" y="224" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+      <line x1="170" y1="240" x2="265" y2="240"/><text x="200" y="234" font-size="9" fill="#b8532c" stroke="none">1 : N</text>
+    </g>
+  </svg>
+  <div class="cap">Figure 4.1 &ndash; Entity&ndash;relationship diagram (crow's-foot cardinalities shown as 1 : N)</div>
+  </div>
+
+  <h2>4.2 Data Dictionary</h2>
+  <div class="tcap">Table 4.1 &ndash; BOOKS</div>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Constraint / description</th></tr>
+    <tr><td>book_id</td><td>NUMBER</td><td>Primary key, identity</td></tr>
+    <tr><td>title / author</td><td>VARCHAR2(200) / (120)</td><td>NOT NULL. Trimmed by trigger</td></tr>
+    <tr><td>isbn</td><td>VARCHAR2(20)</td><td>UNIQUE. Upper-cased by trigger</td></tr>
+    <tr><td>category_id</td><td>NUMBER</td><td>NOT NULL, FK &rarr; CATEGORIES</td></tr>
+    <tr><td>price</td><td>NUMBER(8,2)</td><td>CHECK (price &gt; 0)</td></tr>
+    <tr><td>stock</td><td>NUMBER(6)</td><td>CHECK (stock &ge; 0), default 0</td></tr>
+    <tr><td>description</td><td>VARCHAR2(2000)</td><td>Book summary</td></tr>
+    <tr><td>cover_image, publisher, pub_year, pages</td><td>VARCHAR2 / NUMBER</td><td>Display details. pub_year cannot be in the future (trigger)</td></tr>
+    <tr><td>rating</td><td>NUMBER(2,1)</td><td>CHECK BETWEEN 0 AND 5</td></tr>
+    <tr><td>is_active</td><td>CHAR(1)</td><td>CHECK IN ('Y','N'). Soft delete flag</td></tr>
+  </table>
+  <div class="tcap">Table 4.2 &ndash; USERS</div>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Constraint / description</th></tr>
+    <tr><td>user_id</td><td>NUMBER</td><td>Primary key, identity</td></tr>
+    <tr><td>full_name</td><td>VARCHAR2(100)</td><td>NOT NULL</td></tr>
+    <tr><td>email</td><td>VARCHAR2(120)</td><td>NOT NULL, UNIQUE. Lower-cased and checked by trigger</td></tr>
+    <tr><td>password_hash</td><td>VARCHAR2(64)</td><td>SHA-256 hex of <i>email:password</i>, computed in PL/SQL</td></tr>
+    <tr><td>phone, address</td><td>VARCHAR2</td><td>Optional contact details</td></tr>
+    <tr><td>role</td><td>VARCHAR2(10)</td><td>CHECK IN ('CUSTOMER','ADMIN'), default CUSTOMER</td></tr>
+  </table>
+  <div class="tcap">Table 4.3 &ndash; ORDERS and ORDER_ITEMS</div>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Constraint / description</th></tr>
+    <tr><td>orders.order_id</td><td>NUMBER</td><td>Identity starting at 1001</td></tr>
+    <tr><td>orders.user_id</td><td>NUMBER</td><td>FK &rarr; USERS</td></tr>
+    <tr><td>subtotal, shipping_charge, total_amount</td><td>NUMBER(10,2)</td><td>Calculated in PL/SQL (<code>pkg_cart.cart_total</code>, <code>fn_shipping_charge</code>)</td></tr>
+    <tr><td>status</td><td>VARCHAR2(15)</td><td>CHECK IN ('PLACED','SHIPPED','DELIVERED','CANCELLED')</td></tr>
+    <tr><td>payment_method / payment_ref</td><td>VARCHAR2</td><td>CHECK IN ('CARD','UPI','COD') / generated reference</td></tr>
+    <tr><td>order_items.unit_price</td><td>NUMBER(8,2)</td><td>Price at time of sale, so later price changes do not alter past orders</td></tr>
+  </table>
+  <div class="tcap">Table 4.4 &ndash; Other tables</div>
+  <table>
+    <tr><th style="width:26%">Table</th><th>Purpose and key constraints</th></tr>
+    <tr><td>CATEGORIES</td><td>7 categories. <code>name</code> UNIQUE. Bootstrap icon name used on the home page.</td></tr>
+    <tr><td>CART_ITEMS</td><td>Persistent cart. UNIQUE(user_id, book_id), CHECK quantity 1&ndash;99, ON DELETE CASCADE.</td></tr>
+    <tr><td>INVENTORY_LOG</td><td>old_stock, new_stock, change_qty, reason, changed_at. Written only by trigger.</td></tr>
+    <tr><td>ORDER_STATUS_AUDIT</td><td>old_status, new_status, changed_by, changed_at. Written only by trigger.</td></tr>
+  </table>
+
+  <h2>4.3 Normalisation, Indexes and View</h2>
+  <p>The design is in third normal form. Category names are stored once in CATEGORIES, order lines are separated from order headers,
+  and the price at the time of sale is copied deliberately into ORDER_ITEMS to keep a historical record. Indexes on
+  <code>books(category_id)</code>, the function-based index <code>books(UPPER(title))</code>, <code>orders(user_id)</code>,
+  <code>order_items(order_id)</code> and <code>inventory_log(book_id)</code> support the most frequent searches. The view
+  <code>V_BOOK_CATALOG</code> joins BOOKS with CATEGORIES and is the single source for every book query, so the Java mapping code
+  reads one consistent set of columns.</p>
+</section>
+
+<!-- ============================== CHAPTER 5 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 5</div>
+  <h1>PL/SQL Implementation</h1>
+  <p>All business operations are stored in the database. Table 5.1 lists every PL/SQL object and what it is responsible for.</p>
+  <div class="tcap">Table 5.1 &ndash; PL/SQL objects</div>
+  <table>
+    <tr><th style="width:24%">Object</th><th style="width:14%">Type</th><th>Sub-programs / purpose</th></tr>
+    <tr><td><code>pkg_user</code></td><td>Package</td><td><code>hash_password</code> (function), <code>register_user</code>, <code>login_user</code>, <code>get_all_users</code></td></tr>
+    <tr><td><code>pkg_book</code></td><td>Package</td><td><code>search_books</code>, <code>get_book</code>, <code>get_featured</code>, <code>get_new_arrivals</code>, <code>get_related</code>, <code>get_categories</code>, <code>add_book</code>, <code>update_book</code>, <code>delete_book</code>, <code>adjust_stock</code>, <code>get_low_stock</code>, <code>get_inventory_log</code>, private <code>validate_book</code></td></tr>
+    <tr><td><code>pkg_cart</code></td><td>Package</td><td><code>add_item</code> (MERGE), <code>update_item</code>, <code>remove_item</code>, <code>clear_cart</code>, <code>get_cart</code>, functions <code>cart_total</code>, <code>cart_count</code>, private <code>check_stock</code></td></tr>
+    <tr><td><code>pkg_order</code></td><td>Package</td><td><code>place_order</code>, <code>buy_now</code>, <code>get_user_orders</code>, <code>get_order</code>, <code>get_all_orders</code>, <code>update_status</code>, <code>cancel_order</code>, <code>sales_by_category</code>, private <code>restock_order</code>, <code>new_payment_ref</code></td></tr>
+    <tr><td><code>fn_shipping_charge</code></td><td>Function</td><td>Returns 0 for subtotal &ge; &#8377;499, otherwise &#8377;49</td></tr>
+    <tr><td><code>fn_is_in_stock</code></td><td>Function</td><td>'Y'/'N' availability check with a <code>NO_DATA_FOUND</code> handler</td></tr>
+    <tr><td><code>fn_total_revenue</code></td><td>Function</td><td>Sum of non-cancelled orders</td></tr>
+    <tr><td><code>sp_get_dashboard_stats</code></td><td>Procedure</td><td>Six OUT parameters: books, customers, orders, revenue, low stock, pending</td></tr>
+    <tr><td>4 triggers</td><td>Trigger</td><td>See Section 5.4</td></tr>
+  </table>
+
+  <h2>5.1 Packages</h2>
+  <p>Each package has a <b>specification</b> (the public interface the Java DAOs call) and a <b>body</b> (the implementation and
+  private helpers). Helpers such as <code>validate_book</code> and <code>check_stock</code> are not declared in the
+  specification, so they cannot be called from outside. Query procedures return a <code>SYS_REFCURSOR</code>, which JDBC reads as a
+  normal <code>ResultSet</code>. The search procedure shows how optional filters are handled in one static SQL statement:</p>
+<pre><span class="k">PROCEDURE</span> search_books (p_keyword <span class="k">IN</span> VARCHAR2, p_category_id <span class="k">IN</span> NUMBER,
+                        p_min_price <span class="k">IN</span> NUMBER, p_max_price <span class="k">IN</span> NUMBER,
+                        p_sort <span class="k">IN</span> VARCHAR2,   p_result <span class="k">OUT</span> SYS_REFCURSOR) <span class="k">IS</span>
+  v_kw VARCHAR2(210) := <span class="s">'%'</span> || UPPER(TRIM(p_keyword)) || <span class="s">'%'</span>;
+<span class="k">BEGIN</span>
+  <span class="k">OPEN</span> p_result <span class="k">FOR</span>
+    <span class="k">SELECT</span> * <span class="k">FROM</span> v_book_catalog
+     <span class="k">WHERE</span> is_active = <span class="s">'Y'</span>
+       <span class="k">AND</span> (p_keyword <span class="k">IS NULL</span> <span class="k">OR</span> UPPER(title) <span class="k">LIKE</span> v_kw <span class="k">OR</span> UPPER(author) <span class="k">LIKE</span> v_kw
+            <span class="k">OR</span> UPPER(isbn) <span class="k">LIKE</span> v_kw  <span class="k">OR</span> UPPER(category_name) <span class="k">LIKE</span> v_kw)
+       <span class="k">AND</span> (p_category_id <span class="k">IS NULL OR</span> category_id = p_category_id)
+       <span class="k">AND</span> (p_min_price  <span class="k">IS NULL OR</span> price &gt;= p_min_price)
+       <span class="k">AND</span> (p_max_price  <span class="k">IS NULL OR</span> price &lt;= p_max_price)
+     <span class="k">ORDER BY</span> <span class="k">CASE WHEN</span> p_sort = <span class="s">'price_asc'</span>  <span class="k">THEN</span> price  <span class="k">END ASC</span>,
+              <span class="k">CASE WHEN</span> p_sort = <span class="s">'price_desc'</span> <span class="k">THEN</span> price  <span class="k">END DESC</span>,
+              <span class="k">CASE WHEN</span> p_sort = <span class="s">'rating'</span>     <span class="k">THEN</span> rating <span class="k">END DESC</span>,
+              title;
+<span class="k">END</span> search_books;</pre>
+
+  <h2>5.2 Transaction Processing with an Explicit Cursor</h2>
+  <p><code>pkg_order.place_order</code> is the most important procedure in the project. It turns the cart into an order in a single
+  transaction. The explicit cursor uses <code>FOR UPDATE OF b.stock</code>, which locks every book in the cart until the
+  transaction ends, so two customers cannot buy the last copy at the same time. If any line fails, the handler closes the cursor and
+  rolls back, so no half-created order can remain.</p>
+<pre><span class="k">CURSOR</span> c_cart <span class="k">IS</span>
+  <span class="k">SELECT</span> c.book_id, c.quantity, b.price, b.stock, b.title
+    <span class="k">FROM</span> cart_items c <span class="k">JOIN</span> books b <span class="k">ON</span> b.book_id = c.book_id
+   <span class="k">WHERE</span> c.user_id = p_user_id
+     <span class="k">FOR UPDATE OF</span> b.stock;
+r_item c_cart%<span class="k">ROWTYPE</span>;
+...
+<span class="k">INSERT INTO</span> orders (user_id, subtotal, shipping_charge, total_amount, ...)
+<span class="k">VALUES</span> (p_user_id, v_subtotal, v_shipping, v_subtotal + v_shipping, ...)
+<span class="k">RETURNING</span> order_id <span class="k">INTO</span> p_order_id;
+
+<span class="k">OPEN</span> c_cart;
+<span class="k">LOOP</span>
+  <span class="k">FETCH</span> c_cart <span class="k">INTO</span> r_item;
+  <span class="k">EXIT WHEN</span> c_cart%<span class="k">NOTFOUND</span>;
+  <span class="k">IF</span> r_item.stock &lt; r_item.quantity <span class="k">THEN</span>
+    RAISE_APPLICATION_ERROR(-20003, <span class="s">'Only '</span> || r_item.stock || <span class="s">' copies of "'</span>
+                            || r_item.title || <span class="s">'" left in stock'</span>);
+  <span class="k">END IF</span>;
+  <span class="k">INSERT INTO</span> order_items (order_id, book_id, quantity, unit_price)
+  <span class="k">VALUES</span> (p_order_id, r_item.book_id, r_item.quantity, r_item.price);
+  <span class="k">UPDATE</span> books <span class="k">SET</span> stock = stock - r_item.quantity <span class="k">WHERE</span> book_id = r_item.book_id;
+<span class="k">END LOOP</span>;
+<span class="k">CLOSE</span> c_cart;
+<span class="k">DELETE FROM</span> cart_items <span class="k">WHERE</span> user_id = p_user_id;
+<span class="k">COMMIT</span>;
+<span class="k">EXCEPTION</span>
+  <span class="k">WHEN</span> e_empty_cart <span class="k">THEN</span>
+    <span class="k">ROLLBACK</span>; RAISE_APPLICATION_ERROR(-20004, <span class="s">'Your cart is empty'</span>);
+  <span class="k">WHEN OTHERS THEN</span>
+    <span class="k">IF</span> c_cart%<span class="k">ISOPEN THEN CLOSE</span> c_cart; <span class="k">END IF</span>;
+    <span class="k">ROLLBACK</span>; <span class="k">RAISE</span>;</pre>
+  <p>A second cursor style, the <b>cursor FOR loop</b>, is used when an order is cancelled. It loops over the order lines and
+  returns each quantity to stock:</p>
+<pre><span class="k">PROCEDURE</span> restock_order (p_order_id <span class="k">IN</span> NUMBER) <span class="k">IS</span>
+  <span class="k">CURSOR</span> c_lines <span class="k">IS SELECT</span> book_id, quantity <span class="k">FROM</span> order_items <span class="k">WHERE</span> order_id = p_order_id;
+<span class="k">BEGIN</span>
+  <span class="k">FOR</span> r <span class="k">IN</span> c_lines <span class="k">LOOP</span>
+    <span class="k">UPDATE</span> books <span class="k">SET</span> stock = stock + r.quantity <span class="k">WHERE</span> book_id = r.book_id;
+  <span class="k">END LOOP</span>;
+<span class="k">END</span> restock_order;</pre>
+
+  <h2>5.3 Stored Functions and Procedure</h2>
+<pre><span class="k">CREATE OR REPLACE FUNCTION</span> fn_is_in_stock (p_book_id <span class="k">IN</span> NUMBER, p_qty <span class="k">IN</span> NUMBER)
+<span class="k">RETURN</span> VARCHAR2 <span class="k">IS</span>
+  v_stock books.stock%<span class="k">TYPE</span>;
+<span class="k">BEGIN</span>
+  <span class="k">SELECT</span> stock <span class="k">INTO</span> v_stock <span class="k">FROM</span> books <span class="k">WHERE</span> book_id = p_book_id <span class="k">AND</span> is_active = <span class="s">'Y'</span>;
+  <span class="k">RETURN CASE WHEN</span> v_stock &gt;= p_qty <span class="k">THEN</span> <span class="s">'Y'</span> <span class="k">ELSE</span> <span class="s">'N'</span> <span class="k">END</span>;
+<span class="k">EXCEPTION</span>
+  <span class="k">WHEN NO_DATA_FOUND THEN RETURN</span> <span class="s">'N'</span>;      <span class="c">-- predefined exception handled</span>
+<span class="k">END</span> fn_is_in_stock;</pre>
+  <p><code>sp_get_dashboard_stats</code> returns six aggregate values through OUT parameters in one round trip. Java reads them with
+  <code>registerOutParameter</code>. The procedure calls <code>fn_total_revenue</code> internally, showing a stored program
+  reused by another.</p>
+
+  <h2>5.4 Triggers</h2>
+  <table>
+    <tr><th style="width:28%">Trigger</th><th style="width:28%">Timing / event</th><th>Action</th></tr>
+    <tr><td><code>trg_users_normalize</code></td><td>BEFORE INSERT OR UPDATE OF email, row</td><td>Lower-cases and trims the email. Rejects addresses without '@'.</td></tr>
+    <tr><td><code>trg_books_before_save</code></td><td>BEFORE INSERT OR UPDATE, row</td><td>Trims title and author, upper-cases ISBN, rejects a future publication year.</td></tr>
+    <tr><td><code>trg_books_stock_audit</code></td><td>AFTER INSERT OR UPDATE OF stock, row</td><td>Inserts into INVENTORY_LOG with old/new values and a reason based on <code>INSERTING</code> and the change direction.</td></tr>
+    <tr><td><code>trg_orders_status_audit</code></td><td>AFTER INSERT OR UPDATE OF status, row</td><td>Inserts the status history with the session user into ORDER_STATUS_AUDIT.</td></tr>
+  </table>
+<pre><span class="k">CREATE OR REPLACE TRIGGER</span> trg_books_stock_audit
+<span class="k">AFTER INSERT OR UPDATE OF</span> stock <span class="k">ON</span> books
+<span class="k">FOR EACH ROW</span>
+<span class="k">DECLARE</span>
+  v_reason inventory_log.reason%<span class="k">TYPE</span>;
+<span class="k">BEGIN</span>
+  <span class="k">IF</span> INSERTING <span class="k">THEN</span>                v_reason := <span class="s">'INITIAL STOCK'</span>;
+  <span class="k">ELSIF</span> :NEW.stock &lt; :OLD.stock <span class="k">THEN</span> v_reason := <span class="s">'SALE / ADJUSTMENT'</span>;
+  <span class="k">ELSE</span>                              v_reason := <span class="s">'RESTOCK / RETURN'</span>;
+  <span class="k">END IF</span>;
+  <span class="k">IF</span> INSERTING <span class="k">OR</span> :NEW.stock &lt;&gt; :OLD.stock <span class="k">THEN</span>
+    <span class="k">INSERT INTO</span> inventory_log (book_id, old_stock, new_stock, change_qty, reason)
+    <span class="k">VALUES</span> (:NEW.book_id, :OLD.stock, :NEW.stock, :NEW.stock - NVL(:OLD.stock, 0), v_reason);
+  <span class="k">END IF</span>;
+<span class="k">END</span>;</pre>
+
+  <h2>5.5 Exception Handling Strategy</h2>
+  <p>The code uses three kinds of exceptions. <b>Predefined</b> exceptions (<code>NO_DATA_FOUND</code>, <code>DUP_VAL_ON_INDEX</code>)
+  are caught and turned into meaningful messages. A <b>user-defined</b> exception (<code>pkg_order.e_empty_cart</code>) is declared in
+  the package specification and raised with <code>RAISE</code>. Business-rule violations use <b>RAISE_APPLICATION_ERROR</b> with
+  codes reserved for the application:</p>
+  <table>
+    <tr><th style="width:14%">Code</th><th style="width:40%">Meaning</th><th>Raised by</th></tr>
+    <tr><td>-20001</td><td>Email already registered</td><td><code>register_user</code> (also maps DUP_VAL_ON_INDEX)</td></tr>
+    <tr><td>-20002</td><td>Invalid email or password</td><td><code>login_user</code> (maps NO_DATA_FOUND)</td></tr>
+    <tr><td>-20003</td><td>Insufficient stock</td><td><code>check_stock</code>, <code>place_order</code>, <code>buy_now</code></td></tr>
+    <tr><td>-20004</td><td>Cart is empty</td><td><code>place_order</code> (from <code>e_empty_cart</code>)</td></tr>
+    <tr><td>-20005 / -20008</td><td>Book / order not found</td><td>book and order procedures</td></tr>
+    <tr><td>-20006</td><td>Invalid quantity or negative stock</td><td><code>check_stock</code>, <code>adjust_stock</code></td></tr>
+    <tr><td>-20007 / -20009</td><td>Order cannot be cancelled / invalid status change</td><td><code>cancel_order</code>, <code>update_status</code></td></tr>
+    <tr><td>-20010</td><td>Validation failed</td><td>validation helpers and triggers</td></tr>
+  </table>
+  <p>In Java, <code>DBConnection.friendlyMessage()</code> checks whether the <code>SQLException</code> error code is between 20000 and 20999.
+  If it is, the message text is shown to the user directly. Any other error is logged and replaced with a generic message, so internal
+  details never reach the browser.</p>
+</section>
+
+<!-- ============================== CHAPTER 6 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 6</div>
+  <h1>Web Application Implementation</h1>
+  <h2>6.1 Controllers and URL Mapping</h2>
+  <table>
+    <tr><th style="width:22%">Servlet</th><th style="width:30%">URL pattern(s)</th><th>Responsibility</th></tr>
+    <tr><td>HomeServlet</td><td><code>""</code>, <code>/home</code></td><td>Categories, top-rated books and new arrivals</td></tr>
+    <tr><td>CatalogServlet</td><td><code>/books</code>, <code>/book</code></td><td>Search/filter/sort listing. Details page with related books</td></tr>
+    <tr><td>AuthServlet</td><td><code>/login</code>, <code>/register</code>, <code>/logout</code></td><td>Account creation, sign in/out, safe redirect to the page the user came from</td></tr>
+    <tr><td>CartServlet</td><td><code>/cart</code></td><td>View cart. POST actions add/update/remove/clear. Returns JSON for AJAX calls</td></tr>
+    <tr><td>CheckoutServlet</td><td><code>/checkout</code></td><td>Cart or Buy Now summary, payment validation, order placement</td></tr>
+    <tr><td>OrderServlet</td><td><code>/orders</code>, <code>/order</code></td><td>Order history, details/confirmation, customer cancellation</td></tr>
+    <tr><td>AdminServlet</td><td><code>/admin/*</code></td><td>Dashboard, books CRUD, inventory, orders, customers (dispatch on path info)</td></tr>
+  </table>
+
+  <h2>6.2 Calling PL/SQL with CallableStatement</h2>
+  <p>Each DAO method opens a connection in try-with-resources, prepares a JDBC escape call, binds IN parameters, registers OUT
+  parameters, runs the call and reads the results. A procedure that returns a REF CURSOR is read like this:</p>
+<pre><span class="k">public</span> List&lt;Book&gt; search(String keyword, Integer categoryId, Double minPrice,
+                         Double maxPrice, String sort) <span class="k">throws</span> SQLException {
+    <span class="k">try</span> (Connection con = DBConnection.getConnection();
+         CallableStatement cs = con.prepareCall(<span class="s">"{call pkg_book.search_books(?,?,?,?,?,?)}"</span>)) {
+        setString(cs, 1, keyword);          <span class="c">// setNull(...) when the filter is empty</span>
+        setInt(cs, 2, categoryId);
+        setDouble(cs, 3, minPrice);
+        setDouble(cs, 4, maxPrice);
+        setString(cs, 5, sort);
+        cs.registerOutParameter(6, Types.REF_CURSOR);
+        cs.execute();
+        <span class="k">return</span> readBooks(cs.getObject(6, ResultSet.<span class="k">class</span>));
+    }
+}</pre>
+  <p>Stored functions use the <code>{? = call ...}</code> form, for example the cart total and the shipping rule:</p>
+<pre><span class="k">try</span> (CallableStatement cs = con.prepareCall(<span class="s">"{? = call fn_shipping_charge(?)}"</span>)) {
+    cs.registerOutParameter(1, Types.NUMERIC);
+    cs.setDouble(2, subtotal);
+    cs.execute();
+    <span class="k">return</span> cs.getDouble(1);
+}</pre>
+
+  <h2>6.3 Sessions, Filters and Security</h2>
+  <ul>
+    <li><b>AuthFilter</b> (<code>@WebFilter</code> on <code>/cart</code>, <code>/checkout</code>, <code>/orders</code>, <code>/order</code>,
+        <code>/admin/*</code>) redirects guests to the login page with a <code>next</code> parameter, returns JSON 401 for AJAX requests, and
+        returns HTTP 403 when a customer opens an admin URL.</li>
+    <li>At login, the old session is invalidated and a new one is created (<b>session fixation</b> protection). The session holds the
+        <code>User</code> bean and the cart count shown on the header badge.</li>
+    <li><b>Flash messages</b> are stored in the session after a POST and removed once shown, which implements the Post/Redirect/Get pattern.</li>
+    <li>All dynamic text is escaped with <code>fn:escapeXml</code>. All SQL runs through bound parameters. The session cookie is
+        <code>HttpOnly</code> (web.xml). Redirect targets are restricted to paths inside the application.</li>
+  </ul>
+
+  <h2>6.4 Views: JSP, JSTL and a Custom Tag</h2>
+  <p>Every page includes <code>common/header.jspf</code> and <code>common/footer.jspf</code>, which hold the navigation bar, flash messages,
+  the cart badge and the scripts. The book card shown on the home, catalogue and related-books sections is a <b>JSP tag file</b>, so the
+  markup is written once:</p>
+<pre>&lt;%@ attribute name=<span class="s">"book"</span> required=<span class="s">"true"</span> type=<span class="s">"com.scriptwell.model.Book"</span> %&gt;
+...
+&lt;c:forEach items=<span class="s">"${featured}"</span> var=<span class="s">"b"</span>&gt;
+  &lt;div class=<span class="s">"col-6 col-md-4 col-lg-3"</span>&gt;&lt;sw:bookCard book=<span class="s">"${b}"</span> /&gt;&lt;/div&gt;
+&lt;/c:forEach&gt;</pre>
+  <p>Prices and dates are formatted with <code>&lt;fmt:formatNumber&gt;</code> and <code>&lt;fmt:formatDate&gt;</code>. The default
+  locale is set to <code>en_IN</code> in <code>web.xml</code>, so rupee amounts use Indian digit grouping.</p>
+
+  <h2>6.5 Client-side JavaScript</h2>
+  <ul>
+    <li><b>AJAX add-to-cart:</b> forms with class <code>js-add-cart</code> are sent with <code>fetch()</code> and the header
+        <code>X-Requested-With: fetch</code>. The servlet replies with JSON <code>{ok, count, message}</code>, the badge updates and a toast appears.</li>
+    <li><b>Quantity steppers</b> for the book page and the cart. Cart rows submit automatically when the quantity changes.</li>
+    <li><b>Checkout:</b> shows only the fields of the chosen payment method, formats the card number and expiry, uses HTML5 validation,
+        and shows a short &ldquo;Processing payment&rdquo; state before submitting.</li>
+    <li><b>Admin:</b> confirmation dialogs before deletes, and a Chart.js bar chart of revenue by category.</li>
+  </ul>
+
+  <h2>6.6 User Interface Design</h2>
+  <p>The visual identity uses a deep ink colour (<code>#1c1a2e</code>), a terracotta accent (<code>#b8532c</code>), gold highlights and
+  a warm cream background. Headings use <i>Playfair Display</i> and body text uses <i>Inter</i>. The 35 book covers are SVG files generated
+  by <code>scripts/generate_seed.py</code>, with a palette and motif for each category, so the catalogue looks consistent and needs no
+  copyrighted cover images. The Bootstrap grid changes from four columns on desktop to two on phones, and the admin sidebar becomes
+  a horizontal scrolling menu on small screens.</p>
+</section>
+
+<!-- ============================== CHAPTER 7 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 7</div>
+  <h1>Application Screenshots</h1>
+  <p>The screenshots below were taken from the running application (Tomcat 10.1 + Oracle Database Free 23ai) using the demo accounts
+  <code>demo@scriptwell.com</code> (customer) and <code>admin@scriptwell.com</code> (administrator).</p>
+  <h2>7.1 Customer Module</h2>
+  <div class="figure"><img src="screenshots/01-home.png"><div class="cap">Figure 7.1 &ndash; Home page: hero section with search, store highlights and shop-by-category tiles</div></div>
+  <div class="row2"><div class="figure"><img src="screenshots/02-catalog.png"><div class="cap">Figure 7.2 &ndash; Catalogue filtered to Programming, sorted by rating (<code>pkg_book.search_books</code>)</div></div><div class="figure"><img src="screenshots/08-login.png"><div class="cap">Figure 7.3 &ndash; Sign-in page (checked by <code>pkg_user.login_user</code>)</div></div></div>
+  <div class="figure"><img src="screenshots/03-book.png"><div class="cap">Figure 7.4 &ndash; Book details page with rating, stock status, quantity selector, Add to cart and Buy Now</div></div>
+  <div class="row2"><div class="figure"><img src="screenshots/04-cart.png"><div class="cap">Figure 7.5 &ndash; Shopping cart with quantity controls and order summary</div></div><div class="figure"><img src="screenshots/07-orders.png"><div class="cap">Figure 7.6 &ndash; Order history of the signed-in customer</div></div></div>
+  <div class="figure"><img src="screenshots/05-checkout.png"><div class="cap">Figure 7.7 &ndash; Checkout with shipping address and simulated Card / UPI / Cash-on-delivery payment</div></div>
+  <div class="row2"><div class="figure"><img src="screenshots/06-confirmation.png"><div class="cap">Figure 7.8 &ndash; Order confirmation with payment reference and status timeline</div></div><div class="figure"><img src="screenshots/13-admin-edit.png"><div class="cap">Figure 7.9 &ndash; Admin: edit book form (validated by <code>pkg_book</code> and a trigger)</div></div></div>
+  <h2>7.2 Administrator Module</h2>
+  <div class="figure"><img src="screenshots/09-admin-dashboard.png"><div class="cap">Figure 7.10 &ndash; Admin dashboard: KPIs from <code>sp_get_dashboard_stats</code>, revenue chart from <code>pkg_order.sales_by_category</code>, low-stock list</div></div>
+  <div class="row2"><div class="figure"><img src="screenshots/10-admin-books.png"><div class="cap">Figure 7.11 &ndash; Book management (CRUD) with stock badges</div></div><div class="figure"><img src="screenshots/11-admin-orders.png"><div class="cap">Figure 7.12 &ndash; Order management with status filter and update</div></div></div>
+  <div class="row2"><div class="figure"><img src="screenshots/12-admin-inventory.png"><div class="cap">Figure 7.13 &ndash; Inventory: restock and stock log from <code>trg_books_stock_audit</code></div></div><div class="figure phonepair"><div class="pp"><img src="screenshots/14-mobile-home.png"><img src="screenshots/15-mobile-book.png"></div><div class="cap">Figure 7.14 &ndash; Responsive layout on a 390&nbsp;px phone (home and book pages)</div></div></div>
+</section>
+
+<!-- ============================== CHAPTER 8 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 8</div>
+  <h1>Testing</h1>
+  <h2>8.1 Testing Approach</h2>
+  <p>The system was tested at three levels. <b>Unit-level database testing</b> called each PL/SQL program directly in SQL*Plus and
+  checked the results, the triggered audit rows and the raised errors. <b>Integration testing</b> sent real HTTP requests to the deployed
+  application on Tomcat, covering every servlet with valid and invalid input. <b>System and UI testing</b> went through the complete customer
+  and administrator journeys in a browser at desktop and mobile widths. Black-box test cases were designed with equivalence partitioning
+  and boundary values (for example quantity 0, 1, stock and stock&nbsp;+&nbsp;1).</p>
+
+  <h2>8.2 Test Cases</h2>
+  <table>
+    <tr><th style="width:6%">TC</th><th style="width:33%">Test case / input</th><th>Expected result</th><th style="width:8%">Status</th></tr>
+    <tr><td>01</td><td>Open home, catalogue and book pages</td><td>HTTP 200. 8 top-rated cards on home, 34 books in the catalogue</td><td class="pass">Pass</td></tr>
+    <tr><td>02</td><td>Search &ldquo;java&rdquo;</td><td>2 matching books (Effective Java, Head First Java)</td><td class="pass">Pass</td></tr>
+    <tr><td>03</td><td>Category = Programming, sort price high&rarr;low</td><td>6 books, most expensive first</td><td class="pass">Pass</td></tr>
+    <tr><td>04</td><td>Price range &#8377;400&ndash;&#8377;699</td><td>16 books, all within range</td><td class="pass">Pass</td></tr>
+    <tr><td>05</td><td>Open <code>/book?id=999</code></td><td>Styled 404 page</td><td class="pass">Pass</td></tr>
+    <tr><td>06</td><td>Register with an existing email</td><td>&ldquo;An account with this email already exists&rdquo; (-20001)</td><td class="pass">Pass</td></tr>
+    <tr><td>07</td><td>Register with a 3-character password</td><td>Rejected (browser check and -20010 in PL/SQL)</td><td class="pass">Pass</td></tr>
+    <tr><td>08</td><td>Login with wrong password</td><td>&ldquo;Invalid email or password&rdquo; (-20002)</td><td class="pass">Pass</td></tr>
+    <tr><td>09</td><td>Login with mixed-case email ADMIN@scriptwell.com</td><td>Accepted (email normalised). Admin redirected to dashboard</td><td class="pass">Pass</td></tr>
+    <tr><td>10</td><td>Open <code>/cart</code> without logging in</td><td>302 redirect to <code>/login?next=/cart</code></td><td class="pass">Pass</td></tr>
+    <tr><td>11</td><td>AJAX add to cart</td><td>JSON <code>{"ok":true,"count":1}</code>, badge updates, toast shown</td><td class="pass">Pass</td></tr>
+    <tr><td>12</td><td>Add 5 copies of a book with 1 in stock</td><td>&ldquo;Only 1 copy of &hellip; available&rdquo; (-20003). Cart unchanged</td><td class="pass">Pass</td></tr>
+    <tr><td>13</td><td>Update cart quantity to 2</td><td>Line total and summary recalculated (&#8377;1,697)</td><td class="pass">Pass</td></tr>
+    <tr><td>14</td><td>Checkout with card 4111&nbsp;1111&nbsp;1111&nbsp;1112</td><td>&ldquo;Please enter a valid 16-digit card number&rdquo; (Luhn fails). No order created</td><td class="pass">Pass</td></tr>
+    <tr><td>15</td><td>Checkout with valid test card</td><td>Order #1005 created, cart emptied, stock reduced, redirected to confirmation</td><td class="pass">Pass</td></tr>
+    <tr><td>16</td><td>Buy Now with UPI <code>aarav@okaxis</code></td><td>Order created with one line. Cart left untouched</td><td class="pass">Pass</td></tr>
+    <tr><td>17</td><td>Customer opens another customer's order</td><td>HTTP 404 (owner check in <code>pkg_order.get_order</code>)</td><td class="pass">Pass</td></tr>
+    <tr><td>18</td><td>Customer cancels a PLACED order</td><td>Status CANCELLED. Stock restored. Audit row written</td><td class="pass">Pass</td></tr>
+    <tr><td>19</td><td>Customer opens <code>/admin</code></td><td>HTTP 403 from AuthFilter</td><td class="pass">Pass</td></tr>
+    <tr><td>20</td><td>Admin adds a new book</td><td>Book created. INVENTORY_LOG &ldquo;INITIAL STOCK&rdquo; row inserted by trigger</td><td class="pass">Pass</td></tr>
+    <tr><td>21</td><td>Admin saves a book with price -5</td><td>&ldquo;Price must be greater than zero&rdquo;. Form kept</td><td class="pass">Pass</td></tr>
+    <tr><td>22</td><td>Admin saves a book with year 2099</td><td>&ldquo;Publication year cannot be in the future&rdquo; (trigger)</td><td class="pass">Pass</td></tr>
+    <tr><td>23</td><td>Admin deletes a book with no sales / with sales</td><td>Deleted / deactivated to keep order history</td><td class="pass">Pass</td></tr>
+    <tr><td>24</td><td>Admin restocks a book by +20</td><td>Stock updated. &ldquo;RESTOCK / RETURN&rdquo; log row</td><td class="pass">Pass</td></tr>
+    <tr><td>25</td><td>Admin reopens a CANCELLED order</td><td>&ldquo;A cancelled order cannot be reopened&rdquo; (-20009)</td><td class="pass">Pass</td></tr>
+  </table>
+
+  <h2>8.3 Database-level Verification</h2>
+  <p>After the seed script ran (which itself places four orders through the packages), the following queries confirmed that the
+  procedures, functions and triggers worked together correctly:</p>
+<pre>SQL&gt; SELECT order_id, subtotal, shipping_charge, total_amount, status, payment_method FROM orders;
+  ORDER_ID   SUBTOTAL SHIPPING_CHARGE TOTAL_AMOUNT STATUS     PAYMENT_METHOD
+      1001       1598               0         1598 DELIVERED  CARD
+      1002       2096               0         2096 SHIPPED    UPI
+      1003        349              49          398 PLACED     COD
+      1004        749               0          749 PLACED     CARD
+
+SQL&gt; SELECT book_id, old_stock, new_stock, change_qty, reason FROM inventory_log
+     WHERE reason &lt;&gt; 'INITIAL STOCK';
+   BOOK_ID  OLD_STOCK  NEW_STOCK CHANGE_QTY REASON
+        31         65         64         -1 SALE / ADJUSTMENT
+        11         45         43         -2 SALE / ADJUSTMENT    ... (8 rows)
+
+SQL&gt; SELECT order_id, old_status, new_status, changed_by FROM order_status_audit;
+  ORDER_ID OLD_STATUS NEW_STATUS CHANGED_BY
+      1001            PLACED     SCRIPTWELL
+      1001 PLACED     DELIVERED  SCRIPTWELL    ... (6 rows)
+
+SQL&gt; SELECT fn_shipping_charge(300) ship, fn_is_in_stock(34, 5) instock FROM dual;   --  49  N
+SQL&gt; SELECT name, type FROM user_errors;                                             --  no rows selected</pre>
+</section>
+
+<!-- ============================== CHAPTER 9 ============================== -->
+<section class="chapter flow">
+  <div class="num">Chapter 9</div>
+  <h1>Results, Conclusion and Future Scope</h1>
+  <h2>9.1 Results</h2>
+  <ul>
+    <li>A complete online bookstore with <b>34 books in 7 categories</b>, all customer features (search, filters, details, cart, Buy Now,
+        checkout, confirmation, history, cancellation) and all administrator features (dashboard, CRUD, inventory, order management,
+        customer list).</li>
+    <li><b>All 25 test cases passed.</b> All PL/SQL objects compile with no errors.</li>
+    <li>Every database operation from Java goes through <b>CallableStatement</b>: 4 packages with 35 public and private sub-programs, 3
+        stand-alone functions, 1 stand-alone procedure and 4 triggers.</li>
+    <li>Checkout is atomic and safe under concurrency. The interface is clean and responsive on desktop and mobile.</li>
+  </ul>
+
+  <h2>9.2 Learning Outcomes</h2>
+  <p>The project gave hands-on experience of the servlet lifecycle, MVC, sessions, filters, JSTL and AJAX. It also covered PL/SQL package design,
+  cursor-based transactions with row locking, trigger-based auditing and shared error handling between the database and the web tier.</p>
+
+  <h2>9.3 Conclusion</h2>
+  <p>ScriptWell meets all of the stated objectives. It shows that keeping business rules inside Oracle PL/SQL, and calling them through a
+  thin, well-structured Java MVC layer, gives an application that is simpler to reason about, consistent for every client, and robust
+  against concurrent use. At the same time, the modern Bootstrap-based interface gives customers an experience comparable to
+  commercial bookstores. The project is kept to a practical size and every part of it can be explained and demonstrated in a viva.</p>
+
+  <h2>9.4 Future Scope</h2>
+  <ul>
+    <li>Integration with a real payment gateway (e.g. Razorpay or Stripe) with webhook confirmation.</li>
+    <li>E-mail or SMS notifications for order placement and status changes.</li>
+    <li>Customer reviews and ratings, wish lists and personalised recommendations.</li>
+    <li>Discount coupons as a new PL/SQL package. Connection pooling through a JNDI DataSource and a REST API for a mobile app.</li>
+    <li>Image upload for book covers, and PDF invoices generated for every order.</li>
+  </ul>
+
+  <h2 id="refs">References</h2>
+  <ol class="refs">
+    <li>Jakarta EE Platform Specification &ndash; Jakarta Servlet 6.0 and Jakarta Server Pages 3.1, Eclipse Foundation.</li>
+    <li>Apache Tomcat 10.1 Documentation, The Apache Software Foundation.</li>
+    <li>Oracle Database PL/SQL Language Reference, 23ai, Oracle Corporation.</li>
+    <li>Oracle Database JDBC Developer's Guide, 23ai, Oracle Corporation.</li>
+    <li>S. Feuerstein and B. Pribyl, <i>Oracle PL/SQL Programming</i>, 6th ed., O'Reilly Media.</li>
+    <li>M. Hall and L. Brown, <i>Core Servlets and JavaServer Pages</i>, 2nd ed., Prentice Hall.</li>
+    <li>Bootstrap 5.3 Documentation, getbootstrap.com.</li>
+    <li>MDN Web Docs &ndash; Fetch API, HTML forms and CSS, Mozilla.</li>
+  </ol>
+</section>
+
 </body>
 </html>
