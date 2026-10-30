@@ -40,6 +40,11 @@
   .shot img { width: 100%; height: 41mm; object-fit: cover; object-position: top; border: 1px solid #cfcfcf; border-radius: 3px; display: block; }
   .shot div { font-size: 7.8pt; color: #444; text-align: center; margin-top: 2px; }
   .pass { color: #1e7d32; font-weight: 600; }
+  /* On screen, show the A4 sheets the PDF is printed from */
+  @media screen {
+    html, body { background: #e9e9e9; }
+    .page { width: 184mm; margin: 12px auto; padding: 0; background: #fff; box-shadow: 0 0 0 12mm #fff, 0 2px 14mm 12mm rgba(0,0,0,.12); margin-top: 26mm; margin-bottom: 26mm; }
+  }
   .foot { position: absolute; bottom: 0; left: 0; right: 0; font-size: 7.6pt; color: #888; display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 3px; }
 </style>
 </head>
