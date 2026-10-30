@@ -1,0 +1,46 @@
+</main>
+<c:if test="${empty hideFooter}">
+<footer class="sw-footer mt-5 pt-5 pb-4">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="sw-brand text-white mb-2" style="color:#fff!important">ScriptWell<span class="dot">.</span></div>
+        <p class="small">A modern online bookstore for curious minds. Hand-picked classics, bestsellers and technical books, delivered to your door.</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6>Shop</h6>
+        <ul class="list-unstyled small">
+          <li><a href="${ctx}/books">All books</a></li>
+          <li><a href="${ctx}/books?sort=rating">Top rated</a></li>
+          <li><a href="${ctx}/books?sort=newest">New arrivals</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6>Account</h6>
+        <ul class="list-unstyled small">
+          <li><a href="${ctx}/orders">My orders</a></li>
+          <li><a href="${ctx}/cart">Cart</a></li>
+          <li><a href="${ctx}/login">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h6>Why ScriptWell</h6>
+        <ul class="list-unstyled small">
+          <li><i class="bi bi-truck me-2 text-warning"></i>Free delivery on orders above &#8377;499</li>
+          <li><i class="bi bi-shield-check me-2 text-warning"></i>Secure checkout</li>
+          <li><i class="bi bi-arrow-repeat me-2 text-warning"></i>Cancel any order before it ships</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <div class="d-flex flex-wrap justify-content-between small">
+      <span>&copy; 2026 ScriptWell Books. University mini project &mdash; Java EE &amp; Oracle PL/SQL.</span>
+      <span>Built with Servlets, JSP, JDBC &amp; Bootstrap</span>
+    </div>
+  </div>
+</footer>
+</c:if>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${ctx}/assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+/build/
+/dist/
+/bin/
+.metadata/
+*.class
+*.log
+.DS_Store
+Thumbs.db
+__pycache__/

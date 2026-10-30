@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptWell - Project Report</title>
+<style>
+  @page { size: A4; margin: 12mm 13mm; }
+  * { box-sizing: border-box; }
+  html, body { background: #ffffff; margin: 0; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #1f1f1f; font-size: 9pt; line-height: 1.32;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { height: 272mm; overflow: hidden; page-break-after: always; position: relative; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 22pt; margin: 0; color: #1c1a2e; }
+  h2 { font-family: Georgia, serif; font-size: 11.5pt; color: #1c1a2e; margin: 7px 0 3px; padding-bottom: 2px; border-bottom: 1.5px solid #b8532c; }
+  p { margin: 0 0 5px; text-align: justify; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #1c1a2e; padding-bottom: 6px; }
+  .head .sub { color: #555; font-size: 10pt; margin-top: 2px; }
+  .head .right { text-align: right; font-size: 8.6pt; color: #444; }
+  .tags { margin: 6px 0 2px; }
+  .tag { display: inline-block; border: 1px solid #d9cfc1; border-radius: 10px; padding: 0 7px; margin: 0 3px 3px 0; font-size: 8pt; color: #5a4636; background: #fff; }
+  table { border-collapse: collapse; width: 100%; font-size: 7.9pt; }
+  th, td { border: 1px solid #d6d6d6; padding: 1.6px 5px; text-align: left; vertical-align: top; }
+  th { background: #f3efe8; font-weight: 600; }
+  code { font-family: Consolas, monospace; font-size: 7.8pt; color: #8a3a1c; }
+  .cols { display: flex; gap: 12px; }
+  .cols > div { flex: 1; min-width: 0; }
+  ul { margin: 0 0 4px; padding-left: 16px; }
+  li { margin-bottom: 1px; }
+  /* architecture diagram */
+  .arch { display: flex; align-items: stretch; gap: 0; margin: 4px 0 2px; }
+  .box { flex: 1; border: 1.5px solid #1c1a2e; border-radius: 6px; padding: 4px 5px; text-align: center; font-size: 8pt; background: #fff; }
+  .box b { display: block; font-size: 8.6pt; color: #1c1a2e; }
+  .box.db { border-color: #b8532c; }
+  .box.db b { color: #b8532c; }
+  .arrow { width: 16px; display: flex; align-items: center; justify-content: center; color: #b8532c; font-weight: bold; font-size: 11pt; }
+  .caption { font-size: 7.8pt; color: #555; text-align: center; margin-top: 2px; }
+  /* screenshots */
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; }
+  .shot img { width: 100%; height: 41mm; object-fit: cover; object-position: top; border: 1px solid #cfcfcf; border-radius: 3px; display: block; }
+  .shot div { font-size: 7.8pt; color: #444; text-align: center; margin-top: 2px; }
+  .pass { color: #1e7d32; font-weight: 600; }
+  .foot { position: absolute; bottom: 0; left: 0; right: 0; font-size: 7.6pt; color: #888; display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ============================ PAGE 1 ============================ -->
+<div class="page">
+  <div class="head">
+    <div>
+      <h1>ScriptWell &mdash; Online Book Store</h1>
+      <div class="sub">Mini Project Report &middot; Advanced Internet Programming &amp; PL/SQL</div>
+    </div>
+    <div class="right">Java Servlets &middot; JSP &middot; JDBC<br>Oracle Database Free 23ai &middot; PL/SQL<br>Tomcat 10.1 &middot; JDK 17 &middot; Eclipse IDE</div>
+  </div>
+  <div class="tags">
+    <span class="tag">MVC architecture</span><span class="tag">Jakarta Servlets 6.0</span><span class="tag">JSP + JSTL</span><span class="tag">Bootstrap 5</span>
+    <span class="tag">JavaScript (Fetch API)</span><span class="tag">CallableStatement</span><span class="tag">Packages</span><span class="tag">Triggers</span><span class="tag">Cursors</span><span class="tag">Exception handling</span>
+  </div>
+
+  <h2>1. Introduction and Objectives</h2>
+  <p><b>ScriptWell</b> is a responsive e-commerce web application for buying books online. Customers can browse a catalogue of
+  34 books in 7 categories, search and filter them, manage a shopping cart, buy instantly with <i>Buy Now</i>, pay through a
+  simulated Card/UPI/Cash-on-Delivery gateway and track or cancel their orders. Administrators get a dashboard for book CRUD,
+  inventory and order management. The project has two aims. For <b>Advanced Internet Programming</b>, it applies the MVC pattern with Servlets,
+  JSP, filters, sessions and JDBC. For <b>PL/SQL</b>, it places the core business rules in the database as packages, procedures,
+  functions, triggers, cursors and custom exceptions. Java calls this logic only through <code>CallableStatement</code>.</p>
+
+  <h2>2. System Architecture</h2>
+  <div class="arch">
+    <div class="box"><b>Browser (View)</b>JSP + JSTL, HTML5, CSS3, Bootstrap 5, JavaScript</div>
+    <div class="arrow">&#8644;</div>
+    <div class="box"><b>Filters</b>EncodingFilter<br>AuthFilter (login / admin role)</div>
+    <div class="arrow">&#8644;</div>
+    <div class="box"><b>Controllers</b>8 Servlets: Home, Catalog, Auth, Cart, Checkout, Order, Admin</div>
+    <div class="arrow">&#8644;</div>
+    <div class="box"><b>DAO + Model</b>BookDAO, UserDAO, CartDAO, OrderDAO; JavaBeans</div>
+    <div class="arrow">&#8644;</div>
+    <div class="box db"><b>Oracle PL/SQL</b>4 packages, 3 functions, 1 procedure, 4 triggers</div>
+  </div>
+  <div class="caption">Figure 1 &ndash; Three-tier MVC architecture. Servlets never contain SQL. They call DAO methods, which run stored PL/SQL through JDBC <code>CallableStatement</code> and read results from <code>SYS_REFCURSOR</code> OUT parameters.</div>
+
+  <div class="cols">
+    <div>
+      <h2>3. Database Design</h2>
+      <table>
+        <tr><th>Table</th><th>Key columns / constraints</th></tr>
+        <tr><td>CATEGORIES</td><td>category_id (PK, identity), name UNIQUE</td></tr>
+        <tr><td>BOOKS</td><td>book_id PK, category_id FK, isbn UNIQUE, CHECK price&gt;0, stock&ge;0, rating 0&ndash;5</td></tr>
+        <tr><td>USERS</td><td>user_id PK, email UNIQUE, password_hash (SHA-256), role CHECK IN (CUSTOMER, ADMIN)</td></tr>
+        <tr><td>CART_ITEMS</td><td>UNIQUE(user_id, book_id), CHECK qty 1&ndash;99, ON DELETE CASCADE</td></tr>
+        <tr><td>ORDERS</td><td>order_id PK (from 1001), status CHECK, payment_method CHECK</td></tr>
+        <tr><td>ORDER_ITEMS</td><td>order_id FK, book_id FK, unit_price (price at time of sale)</td></tr>
+        <tr><td>INVENTORY_LOG</td><td>old/new stock, change, reason (written by trigger)</td></tr>
+        <tr><td>ORDER_STATUS_AUDIT</td><td>old/new status history (written by trigger)</td></tr>
+      </table>
+      <p style="margin-top:4px">The view <code>V_BOOK_CATALOG</code> joins books with categories and is used by every catalogue query.
+      Indexes on <code>category_id</code>, <code>UPPER(title)</code> and <code>orders.user_id</code> speed up search and order history.</p>
+    </div>
+    <div>
+      <h2>4. PL/SQL Implementation</h2>
+      <table>
+        <tr><th>Object</th><th>Responsibility</th></tr>
+        <tr><td><code>pkg_user</code></td><td>register, login (<code>STANDARD_HASH</code>), list users</td></tr>
+        <tr><td><code>pkg_book</code></td><td>search with filters and sorting (REF CURSOR), add/update/delete, adjust stock</td></tr>
+        <tr><td><code>pkg_cart</code></td><td>MERGE-based add, update, remove, <code>cart_total</code>, <code>cart_count</code></td></tr>
+        <tr><td><code>pkg_order</code></td><td><code>place_order</code>, <code>buy_now</code>, history, status update, cancel with restock</td></tr>
+        <tr><td>Functions</td><td><code>fn_shipping_charge</code>, <code>fn_is_in_stock</code>, <code>fn_total_revenue</code></td></tr>
+        <tr><td>Procedure</td><td><code>sp_get_dashboard_stats</code> (6 OUT parameters)</td></tr>
+        <tr><td>Triggers</td><td>email normalisation, book validation, stock audit, order status audit</td></tr>
+      </table>
+      <p style="margin-top:4px;text-align:left"><b>Checkout transaction:</b> <code>place_order</code> opens an explicit cursor over the cart with
+      <code>FOR UPDATE</code>, which locks the book rows. For each line it checks stock, inserts the order line and decrements stock, then clears the
+      cart and <code>COMMIT</code>s. If anything fails, the exception handler closes the cursor and rolls back the whole order. Business errors use
+      <code>RAISE_APPLICATION_ERROR(-20001&hellip;-20010)</code>, and Java turns them into friendly messages, e.g.
+      <i>&ldquo;Only 1 copy of &lsquo;The Psychology of Money&rsquo; available&rdquo;</i>.</p>
+    </div>
+  </div>
+
+  <h2>5. Web Implementation Highlights</h2>
+  <div class="cols">
+    <ul>
+      <li><b>MVC:</b> JavaBeans (model), JSP views under <code>WEB-INF</code> (not directly reachable), Servlets as controllers using <code>@WebServlet</code>.</li>
+      <li><b>Session management:</b> the logged-in user and cart badge count are kept in <code>HttpSession</code>. The session ID is regenerated at login to prevent session fixation.</li>
+      <li><b>Security:</b> <code>AuthFilter</code> protects cart, checkout, orders and <code>/admin/*</code> (role check, HTTP 403). Output is escaped with <code>fn:escapeXml</code>, and all SQL uses bind parameters.</li>
+    </ul>
+    <ul>
+      <li><b>Reusable UI:</b> header/footer fragments and a custom JSP tag file <code>&lt;sw:bookCard&gt;</code>.</li>
+      <li><b>JavaScript:</b> AJAX add-to-cart (Fetch API + JSON) with toast messages, quantity steppers, card formatting and Luhn validation, and a payment-processing animation. Chart.js draws the admin sales chart.</li>
+      <li><b>Responsive design:</b> Bootstrap grid, custom CSS design tokens and 35 generated SVG book covers.</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>ScriptWell &mdash; Online Book Store</span><span>Page 1 of 2</span></div>
+</div>
+
+<!-- ============================ PAGE 2 ============================ -->
+<div class="page">
+  <h2 style="margin-top:0">6. Screenshots</h2>
+  <div class="shots">
+    <div class="shot"><img src="screenshots/01-home.png"><div>Fig. 2 &ndash; Home page with hero, search and categories</div></div>
+    <div class="shot"><img src="screenshots/02-catalog.png"><div>Fig. 3 &ndash; Catalogue with category, price filters and sorting</div></div>
+    <div class="shot"><img src="screenshots/03-book.png"><div>Fig. 4 &ndash; Book details with quantity, Add to cart and Buy Now</div></div>
+    <div class="shot"><img src="screenshots/05-checkout.png"><div>Fig. 5 &ndash; Checkout with simulated Card / UPI / COD payment</div></div>
+    <div class="shot"><img src="screenshots/06-confirmation.png"><div>Fig. 6 &ndash; Order confirmation with payment reference and tracking</div></div>
+    <div class="shot"><img src="screenshots/09-admin-dashboard.png"><div>Fig. 7 &ndash; Admin dashboard (stats from <code>sp_get_dashboard_stats</code>)</div></div>
+  </div>
+
+  <h2>7. Testing and Results</h2>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:40%">Test case</th><th>Expected result</th><th style="width:7%">Result</th></tr>
+    <tr><td>1</td><td>Register with an email that already exists</td><td>pkg_user raises -20001 &rarr; &ldquo;An account with this email already exists&rdquo;</td><td class="pass">Pass</td></tr>
+    <tr><td>2</td><td>Login with wrong password / correct password</td><td>&ldquo;Invalid email or password&rdquo; / session created, redirect (admin &rarr; dashboard)</td><td class="pass">Pass</td></tr>
+    <tr><td>3</td><td>Search &ldquo;java&rdquo;, category filter, price range &#8377;400&ndash;699, sorting</td><td>2, 6 and 16 matching books returned in the chosen order</td><td class="pass">Pass</td></tr>
+    <tr><td>4</td><td>Add 5 copies of a book that has 1 in stock</td><td>-20003 &ldquo;Only 1 copy &hellip; available&rdquo;. Cart unchanged</td><td class="pass">Pass</td></tr>
+    <tr><td>5</td><td>Checkout with invalid card number (fails Luhn)</td><td>Rejected before calling the database, form shown again with error</td><td class="pass">Pass</td></tr>
+    <tr><td>6</td><td>Place order from cart / Buy Now</td><td>Order created, stock reduced, cart cleared, INVENTORY_LOG rows added by trigger</td><td class="pass">Pass</td></tr>
+    <tr><td>7</td><td>Customer opens another user&rsquo;s order or <code>/admin</code></td><td>HTTP 404 (owner check in <code>get_order</code>) / HTTP 403 from AuthFilter</td><td class="pass">Pass</td></tr>
+    <tr><td>8</td><td>Cancel a PLACED order; reopen a cancelled order (admin)</td><td>Stock restored by cursor loop / -20009 &ldquo;A cancelled order cannot be reopened&rdquo;</td><td class="pass">Pass</td></tr>
+    <tr><td>9</td><td>Admin adds book with price -5 or year 2099</td><td>Rejected by <code>pkg_book.validate_book</code> / trigger <code>trg_books_before_save</code></td><td class="pass">Pass</td></tr>
+    <tr><td>10</td><td>Admin deletes a book that has been sold / never sold</td><td>Deactivated (order history kept) / permanently deleted</td><td class="pass">Pass</td></tr>
+  </table>
+  <p style="margin-top:4px"><b>Result:</b> all functional test cases passed on Apache Tomcat 10.1 with Oracle Database Free 23ai. The PL/SQL scripts compile
+  with no errors (<code>USER_ERRORS</code> is empty). The application is responsive on desktop and mobile widths.</p>
+
+  <h2>8. Conclusion and Future Scope</h2>
+  <p>ScriptWell meets the project objectives. It is a complete, good-looking online bookstore built with Servlets, JSP and JDBC in a clean MVC
+  structure. Its core rules (stock control, pricing, checkout transactions, auditing and validation) are enforced in Oracle PL/SQL, so they
+  apply no matter which client calls them. Keeping these rules in the database made the Java code simpler and kept the data consistent even when several users
+  order at the same time. Future improvements could add a real payment gateway, e-mail notifications, wish lists and reviews, connection pooling through
+  a JNDI DataSource, and a REST API for a mobile app.</p>
+
+  <div class="foot"><span>ScriptWell &mdash; Online Book Store</span><span>Page 2 of 2</span></div>
+</div>
+</body>
+</html>

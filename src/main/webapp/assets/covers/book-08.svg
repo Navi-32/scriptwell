@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" width="300" height="420">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#1f4e5f"/><stop offset="1" stop-color="#0d2630"/></linearGradient></defs>
+<rect width="300" height="420" fill="url(#g)"/>
+<rect x="0" y="0" width="14" height="420" fill="#000" fill-opacity=".25"/>
+<rect x="18" y="18" width="264" height="384" fill="none" stroke="#f4d58d" stroke-opacity=".55" stroke-width="1.5"/>
+<text x="150" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="11" letter-spacing="4" fill="#f4d58d">FICTION</text>
+<path d="M30 330 Q150 250 270 330" fill="none" stroke="#f4d58d" stroke-opacity=".4" stroke-width="2"/><path d="M30 350 Q150 270 270 350" fill="none" stroke="#f4d58d" stroke-opacity=".25" stroke-width="2"/>
+<text text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="bold" font-size="25" fill="#ffffff"><tspan x="150" y="135">THE MIDNIGHT</tspan><tspan x="150" y="165">LIBRARY</tspan></text>
+<line x1="110" y1="185" x2="190" y2="185" stroke="#f4d58d" stroke-width="2"/>
+<text x="150" y="385" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" letter-spacing="1.5" fill="#ffffff" fill-opacity=".9">MATT HAIG</text>
+<text x="268" y="34" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#f4d58d" fill-opacity=".8">SW</text>
+</svg>
