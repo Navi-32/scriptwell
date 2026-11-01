@@ -5,7 +5,7 @@ A full-stack online bookstore built as a university mini project for **Advanced 
 - **Front end:** JSP + JSTL, HTML5, CSS3, JavaScript, Bootstrap 5
 - **Back end:** Java Servlets (Jakarta EE 10) following **MVC**, JDBC with `CallableStatement`
 - **Database:** Oracle Database Free 23ai. The business logic lives in **PL/SQL packages, procedures, functions, triggers and cursors**
-- **Tools:** Eclipse IDE (Dynamic Web Project), Apache Tomcat 10.1, JDK 17
+- **Tools:** Eclipse IDE (Dynamic Web Project), Apache Tomcat 11.0 (also compatible with 10.1), JDK 17+
 
 ![Home page](report/screenshots/01-home.png)
 
@@ -76,20 +76,23 @@ sqlplus scriptwell/scriptwell@//localhost:1521/FREEPDB1 @database/00_install.sql
 
 The connection settings are in `src/main/java/db.properties`.
 
-### 2. Application (Eclipse + Tomcat 10.1)
+### 2. Application (Eclipse + Tomcat 11.0)
 
 1. **File → Import → General → Existing Projects into Workspace**, then select the `scriptwell` folder.
-2. Add a server runtime named **Apache Tomcat v10.1** (Window → Preferences → Server → Runtime Environments) and use JDK 17.
+2. Add an **Apache Tomcat v11.0** server runtime (Window → Preferences → Server → Runtime Environments) pointing to your Tomcat 11 installation; use JDK 17 or newer.
 3. Right-click the project, then **Run As → Run on Server**.
 4. Open <http://localhost:8080/scriptwell/>.
+
+The project is configured for the Tomcat 11.0 runtime in Eclipse. Tomcat 10.1 is also supported: configure its Eclipse runtime and select that runtime for the project before publishing.
 
 Without Eclipse:
 
 ```bash
-build.bat "C:\path\to\apache-tomcat-10.1.x"
+build.bat "C:\path\to\apache-tomcat-11.0.x"
 ```
 
 Copy `dist\scriptwell.war` to Tomcat's `webapps` folder and start Tomcat.
+Alternatively, rebuild and deploy in one step with `.\deploy.ps1 -Tomcat "C:\path\to\apache-tomcat-11.0.x"`.
 
 ### Demo accounts
 

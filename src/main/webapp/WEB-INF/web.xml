@@ -6,6 +6,11 @@
 
     <display-name>ScriptWell Online Book Store</display-name>
 
+    <!-- Welcome file: redirect bare context root to the HomeServlet -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
     <!-- Servlets and filters are registered with @WebServlet / @WebFilter annotations -->
 
     <!-- Default locale for <fmt:formatNumber> / <fmt:formatDate> (Indian English) -->
